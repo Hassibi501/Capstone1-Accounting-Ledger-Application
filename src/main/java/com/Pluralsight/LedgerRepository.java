@@ -16,7 +16,6 @@ public class LedgerRepository {
             bufferedReader.readLine();
             while((line = bufferedReader.readLine()) != null) {
 
-                System.out.println(line);
                 String[] parts = line.split("\\|");
 
                 Transactions extractedData = new Transactions(LocalDate.parse(parts[0]), LocalTime.parse(parts[1]), parts[2], parts[3], Double.parseDouble(parts[4]));

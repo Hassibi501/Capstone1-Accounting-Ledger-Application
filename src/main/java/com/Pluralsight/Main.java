@@ -1,10 +1,15 @@
 package com.Pluralsight;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         String fileName = "transactions.csv";
+        ArrayList<Transactions> dataFromFile = LedgerRepository.extractFileData(fileName);
+        LedgerManager manager = new LedgerManager(dataFromFile);
+
+        manager.displayAllTransactions();
 //        Scanner scanner = new Scanner(System.in);
 //        while(true) {
 //            ConsoleUtils.displayHomeScreenMenu();
@@ -28,7 +33,6 @@ public class Main {
 //            }//switch
 //        }//while
 
-        LedgerRepository.extractFileData(fileName);
 
 
     }
