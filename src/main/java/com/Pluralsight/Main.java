@@ -9,29 +9,26 @@ public class Main {
         ArrayList<Transactions> dataFromFile = LedgerRepository.extractFileData(fileName);
         LedgerManager manager = new LedgerManager(dataFromFile);
 
-        manager.displayAllTransactions();
-//        Scanner scanner = new Scanner(System.in);
-//        while(true) {
-//            ConsoleUtils.displayHomeScreenMenu();
-//            String userInput = ConsoleUtils.getValidUserInput(scanner, "Enter menu option(D,P,L,X)", "^[DPLX]$", "Error: Please enter valid menu options(D,P,L,X)");
-//            switch (userInput) {
-//                case "D":
-//                    System.out.println("Add deposit");
-//                    break;
-//                case "P":
-//                    System.out.println("Make a payment");
-//                    break;
-//                case "L":
-//                    System.out.println("ledger");
-//                    break;
-//                case "X":
-//                    System.out.println("exiting program");
-//                    return;
-//                default:
-//                    System.out.println("Error: Please enter valid menu options(D,P,L,X)");
-//                    break;
-//            }//switch
-//        }//while
+        Scanner scanner = new Scanner(System.in);
+        while(true) {
+            ConsoleUtils.displayHomeScreenMenu();
+            String userInput = ConsoleUtils.getValidUserInput(scanner, "Enter menu option(D,P,L,X)", "^[DPLX]$", "Error: Please enter valid menu options(D,P,L,X)");
+            switch (userInput) {
+                case "D":
+                    System.out.println("Add deposit");
+                    break;
+                case "P":
+                    System.out.println("Make a payment");
+                    break;
+                case "L":
+                    System.out.println("ledger");
+                    ConsoleUtils.runLedgerMenu(scanner);
+                    break;
+                case "X":
+                    System.out.println("exiting program");
+                    return;
+            }//switch
+        }//while
 
 
 

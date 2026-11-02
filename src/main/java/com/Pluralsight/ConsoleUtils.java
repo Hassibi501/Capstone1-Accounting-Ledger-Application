@@ -13,7 +13,7 @@ public class ConsoleUtils {
                 -------------------------------
                 """);
     }
-    public static void displayLedgerMenu(){
+    private static void displayLedgerMenu(){
         System.out.println("""
                 -------------------------------
                 A) All Transactions
@@ -25,7 +25,7 @@ public class ConsoleUtils {
                 """);
     }
 
-    public static void displayReportsMenu(){
+    private static void displayReportsMenu(){
         System.out.println("""
                 -------------------------------
                 1) Month To Date
@@ -33,22 +33,66 @@ public class ConsoleUtils {
                 3) Year To Date
                 4) Previous Year
                 5) Search by Vendor
+                0) Back
                 -------------------------------
                 """);
     }
 
-    public void runLedgerMenu(Scanner scanner){
+    public static void runLedgerMenu(Scanner scanner){
         String userInput;
         while(true) {
             displayLedgerMenu();
-            userInput = getValidUserInput(scanner, "Enter menu option(D,P,L,X)", "^[DPLX]$", "Error: Please enter valid menu options(D,P,L,X)");
+            userInput = getValidUserInput(scanner, "Enter menu option(A,D,P,R,H)", "^[ADPRH]$", "Error: Please enter valid menu options(A,D,P,R,H)");
 
             switch (userInput) {
                 case "A":
-            }
+                    System.out.println("display all entries");
+                    break;
+                case "D":
+                    System.out.println("display deposits");
+                    break;
+                case "P":
+                    System.out.println("display payments");
+                    break;
+                case "R":
+                    System.out.println("display report");
+                    runReportsMenu(scanner);
+                    break;
+                case "H":
+                    System.out.println("going back to main menu...");
+                    return;
+            }//switch
+        }//while
+    }
 
+    private static void runReportsMenu(Scanner scanner) {
+        int userInput;
+        while(true) {
+            displayReportsMenu();
+            userInput = Integer.parseInt(getValidUserInput(scanner, "Enter menu option(1,2,3,4,5,0)", "^[123450]$", "Error: Please enter valid menu options(1,2,3,4,5,0)"));
 
-        }
+            switch (userInput) {
+                case 1:
+                    System.out.println("Month To Date");
+                    break;
+                case 2:
+                    System.out.println("Previous Month");
+                    break;
+                case 3:
+                    System.out.println("Year To Date");
+                    break;
+                case 4:
+                    System.out.println("Previous  year");
+                    displayReportsMenu();
+                    break;
+                case 5:
+                    System.out.println("search by vendor");
+                    break;
+                case 0:
+                    System.out.println("going back to main menu...");
+                    return;
+            }//switch
+        }//while
     }
 
     public static String getValidUserInput(Scanner scanner, String promptMessage, String regex, String errorMessage){
