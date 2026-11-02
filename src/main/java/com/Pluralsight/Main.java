@@ -16,6 +16,7 @@ public class Main {
             switch (userInput) {
                 case "D":
                     System.out.println("Add deposit");
+                    //TODO: Get user input by calling LedgerManager.
                     break;
                 case "P":
                     System.out.println("Make a payment");

@@ -1,8 +1,6 @@
 package com.Pluralsight;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -28,5 +26,18 @@ public class LedgerRepository {
         }
 
         return transactions;
+    }
+
+    public static void appendDataToFile(String fileName, String[] dataToAppend)  {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName))) {
+
+            String input = String.format("%s|%s|%s|%s|%s", dataToAppend[0], dataToAppend[1], dataToAppend[2],dataToAppend[3], dataToAppend[4]);
+
+            bufferedWriter.append(input);
+
+        }
+        catch(IOException e) {
+            e.getStackTrace();
+        }
     }
 }
