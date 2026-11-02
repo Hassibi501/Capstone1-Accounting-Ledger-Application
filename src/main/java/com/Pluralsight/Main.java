@@ -1,17 +1,31 @@
 package com.Pluralsight;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Scanner scanner = new Scanner(System.in);
+        while(true){
+            ConsoleUtils.displayHomeScreenMenu();
+            String userInput = ConsoleUtils.getValidUserInput(scanner, "Enter menu option(D,P,L,X)", "^[DPLX]$", "Error: Please enter valid menu options(D,P,L,X)");
+            switch (userInput) {
+                case "D":
+                    System.out.println("Add deposit");
+                    break;
+                case "P":
+                    System.out.println("Make a payment");
+                    break;
+                case "L":
+                    System.out.println("ledger");
+                    break;
+                case "X":
+                    System.out.println("exiting program");
+                    return;
+                default:
+                    System.out.println("Error: Please enter valid menu options(D,P,L,X)");
+                    break;
+            }
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
         }
     }
 }
