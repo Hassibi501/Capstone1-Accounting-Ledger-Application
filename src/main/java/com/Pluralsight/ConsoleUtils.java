@@ -16,7 +16,7 @@ public class ConsoleUtils {
     public static void displayLedgerMenu(){
         System.out.println("""
                 -------------------------------
-                A) All
+                A) All Transactions
                 D) Deposits
                 P) Payments
                 R) Reports
@@ -37,10 +37,16 @@ public class ConsoleUtils {
                 """);
     }
 
-    public void runLedgerMenu(){
+    public void runLedgerMenu(Scanner scanner){
         String userInput;
         while(true) {
             displayLedgerMenu();
+            userInput = getValidUserInput(scanner, "Enter menu option(D,P,L,X)", "^[DPLX]$", "Error: Please enter valid menu options(D,P,L,X)");
+
+            switch (userInput) {
+                case "A":
+            }
+
 
         }
     }
