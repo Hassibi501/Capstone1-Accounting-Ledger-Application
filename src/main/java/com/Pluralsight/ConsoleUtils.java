@@ -63,7 +63,7 @@ public class ConsoleUtils {
                     break;
                 case "R":
                     System.out.println("display report");
-                    runReportsMenu(scanner);
+                    runReportsMenu(scanner, manager);
                     break;
                 case "H":
                     System.out.println("going back to main menu...");
@@ -72,7 +72,7 @@ public class ConsoleUtils {
         }//while
     }
 
-    private static void runReportsMenu(Scanner scanner) {
+    private static void runReportsMenu(Scanner scanner, LedgerManager manager) {
         int userInput;
         while(true) {
             displayReportsMenu();
@@ -80,43 +80,25 @@ public class ConsoleUtils {
 
             switch (userInput) {
                 case 1:
-                    /*
-                     * 1) Month To Date (MTD)
-                     * Starting from the first day of the current month up to today.
-                     * Ex: If today is November 14, 2026:
-                     * Displays transactions from Nov 1st, 2026 to Nov 14th, 2026
-                     */
                     System.out.println("Month To Date");
+                    manager.displayMonthsToDate();
+                    System.out.println();
                     break;
                 case 2:
-                    /*
-                     * 2) Previous Month
-                     * The entire calendar month prior to the current month.
-                     * (From the 1st day to the last dau of the past month.)
-                     * Ex: If today is November 14, 2026, the previous month is October:
-                     * Displays transactions from Oct 1st, 2026 to Oct 30th, 2026
-                     */
+
                     System.out.println("Previous Month");
+                    manager.displayPreviousMonth();
+                    System.out.println();
                     break;
                 case 3:
-                    /*
-                     * 3) Year To Date (YTD)
-                     * From the first day of the current year (Jan 1st) up to today's date.
-                     * Ex: If today is November 14, 2026:
-                     * Displays transactions from Jan 1st, 2026 to Nov 14th, 2026
-                     */
                     System.out.println("Year To Date");
+                    manager.displayYearToDate();
+                    System.out.println();
                     break;
                 case 4:
-                    /*
-                     * 4) Previous Year
-                     * The entire calendar year prior to the current year.
-                     * (From Jan 1st to Dec 31st of the previous year from the current year.)
-                     * Ex: If today is November 14, 2026:
-                     * Displays transactions from Jan 1st, 2025 to Dec 31st, 2025
-                     */
                     System.out.println("Previous  year");
-                    displayReportsMenu();
+                    manager.displayPreviousYear();
+                    System.out.println();
                     break;
                 case 5:
                     System.out.println("search by vendor");
@@ -132,11 +114,12 @@ public class ConsoleUtils {
         String[] words = userInput.trim().split("\\s+");
         StringBuilder titleCase = new StringBuilder();
 
+        // takes each word and capitalizes the first letter
         for(String word: words) {
-            if(word.length() > 0) {
-                titleCase.append(Character.toUpperCase(word.charAt(0)))
-                        .append(word.substring(1).toLowerCase(Locale.ROOT))
-                        .append(" ");
+            if(!word.isEmpty()) {
+                titleCase.append(Character.toUpperCase(word.charAt(0)))  // gets the first letter of a word and capitalize it
+                        .append(word.substring(1).toLowerCase(Locale.ROOT)) // gets every letter after the first one (.substring(1)) and lower case them.
+                        .append(" "); // adds a space for the next word to process in the for loop
             }
         }
         return titleCase.toString().trim();
