@@ -16,16 +16,20 @@ public class Main {
             switch (userInput) {
                 case "D":
                     System.out.println("Add deposit");
-                    //TODO: Get user input by calling LedgerManager.
                     String description = ConsoleUtils.getValidUserInput(scanner, "Enter deposit description:", "\\w+", "Error: Please enter valid input");
                     String vendor = ConsoleUtils.getValidUserInput(scanner, "Enter deposit vendor:", "^[A-Z]\\w+$", "Error: Please enter valid input");
                     String amount = ConsoleUtils.getValidUserInput(scanner, "Enter amount of money for the deposit:", "^\\d+(\\.?\\d{2})?$", "Error: Please enter valid input(12.22)");
-                    String[] newDepositEntry = manager.addDeposit(description, vendor, amount);
+                    String[] newDepositEntry = manager.addTransaction(description, vendor, amount);
                     LedgerRepository.appendDataToFile(fileName, newDepositEntry);
 
                     break;
                 case "P":
                     System.out.println("Make a payment");
+                    description = ConsoleUtils.getValidUserInput(scanner, "Enter deposit description:", "\\w+", "Error: Please enter valid input");
+                    vendor = ConsoleUtils.getValidUserInput(scanner, "Enter deposit vendor:", "^[A-Z]\\w+$", "Error: Please enter valid input");
+                    amount = ConsoleUtils.getValidUserInput(scanner, "Enter amount of money for the deposit:", "^-\\d+(\\.?\\d{2})?$", "Error: Please enter valid input(-12.22)");
+                    newDepositEntry = manager.addTransaction(description, vendor, amount);
+                    LedgerRepository.appendDataToFile(fileName, newDepositEntry);
                     break;
                 case "L":
                     System.out.println("ledger");

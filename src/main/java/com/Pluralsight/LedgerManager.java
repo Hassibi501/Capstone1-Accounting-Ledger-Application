@@ -1,9 +1,7 @@
 package com.Pluralsight;
 
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.chrono.ChronoLocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -14,11 +12,16 @@ public class LedgerManager {
         this.transactions = _transactions;
     }
     
-    public String[] addDeposit(String description, String vendor, String amount) {
+    public String[] addTransaction(String description, String vendor, String amount) {
         LocalDate currentDate = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String formatedCurrentTime = currentTime.format(formatter);
+
+        Transactions newData = new Transactions(currentDate, LocalTime.parse(formatedCurrentTime), description, vendor, Double.parseDouble(amount));
+
+        this.transactions.add(newData);
+
         return new String[]{currentDate.toString(), formatedCurrentTime,description, vendor, amount};
     }
 
