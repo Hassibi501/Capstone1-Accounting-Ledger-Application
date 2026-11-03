@@ -38,7 +38,7 @@ public class ConsoleUtils {
                 """);
     }
 
-    public static void runLedgerMenu(Scanner scanner){
+    public static void runLedgerMenu(Scanner scanner, LedgerManager manager){
         String userInput;
         while(true) {
             displayLedgerMenu();
@@ -47,6 +47,7 @@ public class ConsoleUtils {
             switch (userInput) {
                 case "A":
                     System.out.println("display all entries");
+                    manager.displayAllTransactions();
                     break;
                 case "D":
                     System.out.println("display deposits");

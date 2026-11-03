@@ -29,11 +29,12 @@ public class LedgerRepository {
     }
 
     public static void appendDataToFile(String fileName, String[] dataToAppend)  {
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName))) {
+        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName, true))) {
 
-            String input = String.format("%s|%s|%s|%s|%s", dataToAppend[0], dataToAppend[1], dataToAppend[2],dataToAppend[3], dataToAppend[4]);
+            String input = String.format("%s|%s|%s|%s|%s\n", dataToAppend[0], dataToAppend[1], dataToAppend[2],dataToAppend[3], dataToAppend[4]);
 
-            bufferedWriter.append(input);
+            bufferedWriter.write(input);
+            System.out.println("Successfully appended new item to transactions.");
 
         }
         catch(IOException e) {
