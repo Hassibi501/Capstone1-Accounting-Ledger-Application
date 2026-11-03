@@ -16,8 +16,9 @@ public class Main {
             switch (userInput) {
                 case "D":
                     System.out.println("Add deposit");
-                    String description = ConsoleUtils.getValidUserInput(scanner, "Enter deposit description:", "\\w+", "Error: Please enter valid input");
-                    String vendor = ConsoleUtils.getValidUserInput(scanner, "Enter deposit vendor:", "^[A-Z]\\w+$", "Error: Please enter valid input");
+                    String description = ConsoleUtils.getValidUserInput(scanner, "Enter deposit description:", "^.+$", "Error: Please enter valid input");
+                    String vendorRaw = ConsoleUtils.getValidUserInput(scanner, "Enter deposit vendor:", "^[a-zA-Z0-9 '&.-]+$$", "Error: Please enter valid input");
+                    String vendor = ConsoleUtils.toTitleCase(vendorRaw);
                     String amount = ConsoleUtils.getValidUserInput(scanner, "Enter amount of money for the deposit:", "^\\d+(\\.?\\d{2})?$", "Error: Please enter valid input(12.22)");
                     String[] newDepositEntry = manager.addTransaction(description, vendor, amount);
                     LedgerRepository.appendDataToFile(fileName, newDepositEntry);
@@ -25,8 +26,9 @@ public class Main {
                     break;
                 case "P":
                     System.out.println("Make a payment");
-                    description = ConsoleUtils.getValidUserInput(scanner, "Enter deposit description:", "\\w+", "Error: Please enter valid input");
-                    vendor = ConsoleUtils.getValidUserInput(scanner, "Enter deposit vendor:", "^[A-Z]\\w+$", "Error: Please enter valid input");
+                    description = ConsoleUtils.getValidUserInput(scanner, "Enter deposit description:", "^.+$", "Error: Please enter valid input");
+                    vendorRaw = ConsoleUtils.getValidUserInput(scanner, "Enter deposit vendor:", "^[a-zA-Z0-9 '&.-]+$$", "Error: Please enter valid input");
+                    vendor = ConsoleUtils.toTitleCase(vendorRaw);
                     amount = ConsoleUtils.getValidUserInput(scanner, "Enter amount of money for the deposit:", "^-\\d+(\\.?\\d{2})?$", "Error: Please enter valid input(-12.22)");
                     newDepositEntry = manager.addTransaction(description, vendor, amount);
                     LedgerRepository.appendDataToFile(fileName, newDepositEntry);

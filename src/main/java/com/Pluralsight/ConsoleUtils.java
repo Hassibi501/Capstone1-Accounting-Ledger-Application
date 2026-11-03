@@ -1,5 +1,6 @@
 package com.Pluralsight;
 
+import java.util.Locale;
 import java.util.Scanner;
 
 public class ConsoleUtils {
@@ -48,12 +49,17 @@ public class ConsoleUtils {
                 case "A":
                     System.out.println("display all entries");
                     manager.displayAllTransactions();
+                    System.out.println();
                     break;
                 case "D":
                     System.out.println("display deposits");
+                    manager.displayDepositsOnly();
+                    System.out.println();
                     break;
                 case "P":
                     System.out.println("display payments");
+                    manager.displayPaymentsOnly();
+                    System.out.println();
                     break;
                 case "R":
                     System.out.println("display report");
@@ -74,15 +80,41 @@ public class ConsoleUtils {
 
             switch (userInput) {
                 case 1:
+                    /*
+                     * 1) Month To Date (MTD)
+                     * Starting from the first day of the current month up to today.
+                     * Ex: If today is November 14, 2026:
+                     * Displays transactions from Nov 1st, 2026 to Nov 14th, 2026
+                     */
                     System.out.println("Month To Date");
                     break;
                 case 2:
+                    /*
+                     * 2) Previous Month
+                     * The entire calendar month prior to the current month.
+                     * (From the 1st day to the last dau of the past month.)
+                     * Ex: If today is November 14, 2026, the previous month is October:
+                     * Displays transactions from Oct 1st, 2026 to Oct 30th, 2026
+                     */
                     System.out.println("Previous Month");
                     break;
                 case 3:
+                    /*
+                     * 3) Year To Date (YTD)
+                     * From the first day of the current year (Jan 1st) up to today's date.
+                     * Ex: If today is November 14, 2026:
+                     * Displays transactions from Jan 1st, 2026 to Nov 14th, 2026
+                     */
                     System.out.println("Year To Date");
                     break;
                 case 4:
+                    /*
+                     * 4) Previous Year
+                     * The entire calendar year prior to the current year.
+                     * (From Jan 1st to Dec 31st of the previous year from the current year.)
+                     * Ex: If today is November 14, 2026:
+                     * Displays transactions from Jan 1st, 2025 to Dec 31st, 2025
+                     */
                     System.out.println("Previous  year");
                     displayReportsMenu();
                     break;
@@ -94,6 +126,20 @@ public class ConsoleUtils {
                     return;
             }//switch
         }//while
+    }
+
+    public static String toTitleCase(String userInput) {
+        String[] words = userInput.trim().split("\\s+");
+        StringBuilder titleCase = new StringBuilder();
+
+        for(String word: words) {
+            if(word.length() > 0) {
+                titleCase.append(Character.toUpperCase(word.charAt(0)))
+                        .append(word.substring(1).toLowerCase(Locale.ROOT))
+                        .append(" ");
+            }
+        }
+        return titleCase.toString().trim();
     }
 
     public static String getValidUserInput(Scanner scanner, String promptMessage, String regex, String errorMessage){

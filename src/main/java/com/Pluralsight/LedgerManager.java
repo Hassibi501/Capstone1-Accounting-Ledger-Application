@@ -6,7 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class LedgerManager {
-    private ArrayList<Transactions> transactions;
+    private final ArrayList<Transactions> transactions;
 
     public LedgerManager (ArrayList<Transactions> _transactions){
         this.transactions = _transactions;
@@ -25,7 +25,7 @@ public class LedgerManager {
         return new String[]{currentDate.toString(), formatedCurrentTime,description, vendor, amount};
     }
 
-    public void displayAllTransactions() {
+    private void printDisplayFormating (ArrayList<Transactions> listToPrint) {
         if(this.transactions.isEmpty()) {
             System.out.println("\nNo Transactions have been made");
             return;
@@ -33,12 +33,50 @@ public class LedgerManager {
         System.out.println("-".repeat(85));
         System.out.printf("%-11s %-9s %-35s %-17s %5s\n",
                 "Date", "Time", "Description", "Vendor", "Amount");
-        for(Transactions items: this.transactions) {
+        for(Transactions items: listToPrint) {
             System.out.printf("%-11tF %-9tT %-35s %-17s $%.2f\n",
                     items.getLocalDate(), items.getLocalTime(), items.getDescription(), items.getVendor(), items.getAmount());
         }
         System.out.println("-".repeat(85));
     }
+
+    public void displayAllTransactions() {
+       ArrayList<Transactions> allTransactions = new ArrayList<>();
+
+        for(Transactions items: this.transactions) {
+            Transactions transactions = new Transactions(items.getLocalDate(), items.getLocalTime(), items.getDescription(), items.getVendor(), items.getAmount());
+            allTransactions.add(transactions);
+        }
+
+        printDisplayFormating(allTransactions);
+    }
+
+    public void displayDepositsOnly() {
+        ArrayList<Transactions> deposits = new ArrayList<>();
+
+        for(Transactions items: this.transactions) {
+            if(items.getAmount() >= 0) {
+                Transactions transactions = new Transactions(items.getLocalDate(), items.getLocalTime(), items.getDescription(), items.getVendor(), items.getAmount());
+                deposits.add(transactions);
+            }
+        }
+
+        printDisplayFormating(deposits);
+
+    }
+    public void displayPaymentsOnly() {
+        ArrayList<Transactions> payments = new ArrayList<>();
+
+        for(Transactions items: this.transactions) {
+            if(items.getAmount() <= 0){
+                Transactions transactions = new Transactions(items.getLocalDate(), items.getLocalTime(), items.getDescription(), items.getVendor(), items.getAmount());
+                payments.add(transactions);
+            }
+        }
+
+        printDisplayFormating(payments);
+    }
+
 
 
 }
