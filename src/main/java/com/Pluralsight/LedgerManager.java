@@ -182,4 +182,37 @@ public class LedgerManager {
 
         printDisplayFormating(vendorTransactions);
     }
+
+    public void customSearch(LocalDate startDate, LocalDate endDate, String description, String vendor, String amount){
+        ArrayList<Transactions> filteredList = new ArrayList<>();
+
+        for(Transactions item: this.transactions) {
+            boolean isMatch = true;
+
+            if(startDate != null) {
+                if(item.getLocalDate().isBefore(startDate)) isMatch = false;
+            }
+
+            if(endDate != null) {
+                if(item.getLocalDate().isAfter(endDate)) isMatch = false;
+            }
+
+            if(!description.isEmpty()) {
+                if(!item.getDescription().equalsIgnoreCase(description)) isMatch = false;
+            }
+
+            if(!vendor.isEmpty()) {
+                if(!item.getVendor().equalsIgnoreCase(vendor)) isMatch = false;
+            }
+
+            if(!amount.isEmpty()) {
+                if(item.getAmount() != Double.parseDouble(amount)) isMatch = false;
+            }
+
+            if(isMatch) filteredList.add(item);
+
+        }//for loop
+
+        printDisplayFormating(filteredList);
+    }
 }

@@ -37,7 +37,7 @@ public class LedgerRepository {
             System.out.println("Successfully appended new item to transactions.");
 
         }
-        catch(IOException e) {
+        catch(IOException e ) {
             e.getStackTrace();
         }
     }

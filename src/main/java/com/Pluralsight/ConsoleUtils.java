@@ -1,5 +1,7 @@
 package com.Pluralsight;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -34,6 +36,7 @@ public class ConsoleUtils {
                 3) Year To Date
                 4) Previous Year
                 5) Search by Vendor
+                6) Custom Search
                 0) Back
                 -------------------------------
                 """);
@@ -76,7 +79,7 @@ public class ConsoleUtils {
         int userInput;
         while(true) {
             displayReportsMenu();
-            userInput = Integer.parseInt(getValidUserInput(scanner, "Enter menu option(1,2,3,4,5,0)", "^[123450]$", "Error: Please enter valid menu options(1,2,3,4,5,0)"));
+            userInput = Integer.parseInt(getValidUserInput(scanner, "Enter menu option (1,2,3,4,5,6,0)", "^[1234560]$", "Error: Please enter valid menu options (1,2,3,4,5,6,0)"));
 
             switch (userInput) {
                 case 1:
@@ -102,9 +105,20 @@ public class ConsoleUtils {
                     break;
                 case 5:
                     System.out.println("search by vendor");
-                    String vendorRaw = ConsoleUtils.getValidUserInput(scanner, "Enter vendor's name:", "^[a-zA-Z0-9 '&.-]+$$", "Error: Please enter valid input");
+                    String vendorRaw = getValidUserInput(scanner, "Enter vendor's name:", "^[a-zA-Z0-9 '&.-]+$$", "Error: Please enter valid input");
                     String vendor = toTitleCase(vendorRaw);
                     manager.displayByVendor(vendor);
+                    System.out.println();
+                    break;
+                case 6:
+                    System.out.println("Custom search: Search by any or more fields (Start Date, End Date, Description, Vendor, Amount, or Enter to Skip");
+                    LocalDate startDate = getValidDateInput(scanner, "Enter the Start Date of the transaction your looking for (yyyy-MM-dd): ", "^\\d{4}-\\d{2}-\\d{2}$", "Error: Please enter proper date formate (yyyy-MM-dd):");
+                    LocalDate endDate = getValidDateInput(scanner, "Enter the End Date of the transaction your looking for (yyyy-MM-dd): ", "^\\d{4}-\\d{2}-\\d{2}$", "Error: Please enter proper date formate (yyyy-MM-dd):");
+                    String description = ConsoleUtils.getValidUserInput(scanner, "Enter transaction's description:", "^.+$", "Error: Please enter valid input", false);
+                    vendorRaw = getValidUserInput(scanner, "Enter vendor's name:", "^[a-zA-Z0-9 '&.-]+$$", "Error: Please enter valid input", false);
+                    vendor = toTitleCase(vendorRaw);
+                    String amountRaw = getValidUserInput(scanner, "Enter the amount of money for transaction:", "^-?\\d+(\\.?\\d{2})?$", "Error: Please enter valid input (12.22 or -12.22).", false);
+                    manager.customSearch(startDate, endDate, description, vendor, amountRaw);
                     System.out.println();
                     break;
                 case 0:
@@ -115,6 +129,8 @@ public class ConsoleUtils {
     }
 
     public static String toTitleCase(String userInput) {
+        if(userInput.isEmpty()) return "";
+
         String[] words = userInput.trim().split("\\s+");
         StringBuilder titleCase = new StringBuilder();
 
@@ -130,14 +146,23 @@ public class ConsoleUtils {
     }
 
     public static String getValidUserInput(Scanner scanner, String promptMessage, String regex, String errorMessage){
+        return getValidUserInput(scanner, promptMessage, regex, errorMessage, true);
+    }
+
+    public static String getValidUserInput(Scanner scanner, String promptMessage, String regex, String errorMessage, boolean inputIsRequired){
         while(true){
             System.out.println(promptMessage);
 
             String userInput = scanner.nextLine();
 
             if(userInput.isEmpty()){
-                System.out.println("Error: Input was empty. Please enter valid input. ");
-                continue;
+                if(inputIsRequired) {
+                    System.out.println("Error: Input was empty. Please enter valid input. ");
+                    continue;
+                }
+                else {
+                    return userInput;
+                }
             }
 
             if (!userInput.matches(regex)){
@@ -147,5 +172,22 @@ public class ConsoleUtils {
 
             return userInput;
         }
+    }
+
+    public static LocalDate getValidDateInput(Scanner scanner, String promptMessage, String regex, String errorMessage){
+        while (true) {
+            String dateRaw = getValidUserInput(scanner, promptMessage, regex, errorMessage, false);
+
+            if (dateRaw.isEmpty()) return null;
+
+            try {
+                return LocalDate.parse(dateRaw);
+            }
+            catch (DateTimeParseException e) {
+                System.out.println("Error: That date does not exist on the calendar. Please try again.");
+                continue;
+            }
+        }
+
     }
 }
