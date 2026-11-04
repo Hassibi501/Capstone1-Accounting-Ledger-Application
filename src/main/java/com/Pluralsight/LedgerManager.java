@@ -26,17 +26,20 @@ public class LedgerManager {
     }
 
     private void printDisplayFormating (ArrayList<Transactions> listToPrint) {
+        if(listToPrint.isEmpty()) return;
+
         if(this.transactions.isEmpty()) {
             System.out.println("\nNo Transactions have been made");
             return;
         }
+
         System.out.println("-".repeat(85));
-        System.out.printf("%-11s %-9s %-35s %-17s %5s\n",
-                "Date", "Time", "Description", "Vendor", "Amount");
+        System.out.printf("%-11s %-9s %-35s %-17s %5s\n", "Date", "Time", "Description", "Vendor", "Amount");
+
         for(Transactions items: listToPrint) {
-            System.out.printf("%-11tF %-9tT %-35s %-17s $%.2f\n",
-                    items.getLocalDate(), items.getLocalTime(), items.getDescription(), items.getVendor(), items.getAmount());
+            System.out.printf("%-11tF %-9tT %-35s %-17s $%.2f\n", items.getLocalDate(), items.getLocalTime(), items.getDescription(), items.getVendor(), items.getAmount());
         }
+
         System.out.println("-".repeat(85));
     }
 
@@ -77,18 +80,18 @@ public class LedgerManager {
         printDisplayFormating(payments);
     }
 
-    private void searchByDate(ArrayList<Transactions> allTransactions, LocalDate startDate, LocalDate endDate) {
+    private void searchByDate(ArrayList<Transactions> dateTransactions, LocalDate startDate, LocalDate endDate) {
         for(Transactions items: this.transactions) {
             boolean isBeforeOrOnEndDate = items.getLocalDate().equals(endDate) || items.getLocalDate().isBefore(endDate);
             boolean isAfterOrOnStartDate = items.getLocalDate().equals(startDate) || items.getLocalDate().isAfter(startDate);
 
             if(isBeforeOrOnEndDate && isAfterOrOnStartDate) {
                 Transactions transactions = new Transactions(items.getLocalDate(), items.getLocalTime(), items.getDescription(), items.getVendor(), items.getAmount());
-                allTransactions.add(transactions);
+                dateTransactions.add(transactions);
             }
         }
 
-        printDisplayFormating(allTransactions);
+        printDisplayFormating(dateTransactions);
     }
 
     /*
@@ -98,12 +101,12 @@ public class LedgerManager {
      * Displays transactions from Nov 1st, 2026 to Nov 14th, 2026
      */
     public void displayMonthsToDate() {
-        ArrayList<Transactions> allTransactions = new ArrayList<>();
+        ArrayList<Transactions> dateTransactions = new ArrayList<>();
 
         LocalDate endDate = LocalDate.now();
         LocalDate startDate = LocalDate.now().withDayOfMonth(1);
 
-        searchByDate(allTransactions, startDate, endDate);
+        searchByDate(dateTransactions, startDate, endDate);
     }
 
     /*
@@ -114,12 +117,12 @@ public class LedgerManager {
      * Displays transactions from Oct 1st, 2026 to Oct 30th, 2026
      */
     public void displayPreviousMonth() {
-        ArrayList<Transactions> allTransactions = new ArrayList<>();
+        ArrayList<Transactions> dateTransactions = new ArrayList<>();
 
         LocalDate startDate = LocalDate.now().minusMonths(1).withDayOfMonth(1);
         LocalDate endDate = LocalDate.now().minusMonths(1).withDayOfMonth(31);
 
-        searchByDate(allTransactions, startDate, endDate);
+        searchByDate(dateTransactions, startDate, endDate);
     }
 
     /*
@@ -129,12 +132,12 @@ public class LedgerManager {
      * Displays transactions from Jan 1st, 2026 to Nov 14th, 2026
      */
     public void displayYearToDate() {
-        ArrayList<Transactions> allTransactions = new ArrayList<>();
+        ArrayList<Transactions> dateTransactions = new ArrayList<>();
 
         LocalDate startDate = LocalDate.now().withDayOfYear(1);
         LocalDate endDate = LocalDate.now();
 
-        searchByDate(allTransactions, startDate, endDate);
+        searchByDate(dateTransactions, startDate, endDate);
     }
 
     /*
@@ -145,14 +148,38 @@ public class LedgerManager {
      * Displays transactions from Jan 1st, 2025 to Dec 31st, 2025
      */
     public void displayPreviousYear() {
-        ArrayList<Transactions> allTransactions = new ArrayList<>();
+        ArrayList<Transactions> dateTransactions = new ArrayList<>();
 
         LocalDate startDate = LocalDate.now().minusYears(1).withDayOfYear(1);
         LocalDate endDate = LocalDate.now().minusYears(1).withMonth(12).withDayOfMonth(31);
 
-        searchByDate(allTransactions, startDate, endDate);
+        searchByDate(dateTransactions, startDate, endDate);
     }
 
 
+    private Transactions searchVendor(String vendor) {
+        for(Transactions items: this.transactions) {
+            if(items.getVendor().equalsIgnoreCase(vendor)) {
+                return items;
+            }
+        }
 
+        System.out.println("Vendor does not exist or invalid input. Please try again.");
+        return null;
+
+    }
+
+    public void displayByVendor(String vendor) {
+        ArrayList<Transactions> vendorTransactions = new ArrayList<>();
+        Transactions transaction = searchVendor(vendor);
+
+
+        for(Transactions ignored : this.transactions) {
+            if(transaction != null) {
+                vendorTransactions.add(transaction);
+            }
+        }
+
+        printDisplayFormating(vendorTransactions);
+    }
 }

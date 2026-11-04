@@ -102,6 +102,10 @@ public class ConsoleUtils {
                     break;
                 case 5:
                     System.out.println("search by vendor");
+                    String vendorRaw = ConsoleUtils.getValidUserInput(scanner, "Enter vendor's name:", "^[a-zA-Z0-9 '&.-]+$$", "Error: Please enter valid input");
+                    String vendor = toTitleCase(vendorRaw);
+                    manager.displayByVendor(vendor);
+                    System.out.println();
                     break;
                 case 0:
                     System.out.println("going back to main menu...");
