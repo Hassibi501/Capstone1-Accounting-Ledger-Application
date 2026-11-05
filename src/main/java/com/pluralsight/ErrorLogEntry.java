@@ -1,6 +1,7 @@
-package com.Pluralsight;
+package com.pluralsight;
 
 public class ErrorLogEntry {
+    private final String fileName;
     private final String level;
     private final String timeStamp;
     private final int linNumber;
@@ -8,7 +9,9 @@ public class ErrorLogEntry {
     private final String expectedFormat;
     private final String rawLine;
 
-    public ErrorLogEntry(String level, String timeStamp, int linNumber, String issue, String expectedFormat, String rawLine) {
+
+    public ErrorLogEntry(String fileName, String level, String timeStamp, int linNumber, String issue, String expectedFormat, String rawLine) {
+        this.fileName = fileName;
         this.level = level;
         this.timeStamp = timeStamp;
         this.linNumber = linNumber;
@@ -16,6 +19,4 @@ public class ErrorLogEntry {
         this.expectedFormat = expectedFormat;
         this.rawLine = rawLine;
     }
-
-
 }

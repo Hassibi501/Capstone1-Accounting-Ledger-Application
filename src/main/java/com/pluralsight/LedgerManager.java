@@ -1,4 +1,4 @@
-package com.Pluralsight;
+package com.pluralsight;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -6,9 +6,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class LedgerManager {
-    private final ArrayList<Transactions> transactions;
+    private final ArrayList<Transaction> transactions;
 
-    public LedgerManager (ArrayList<Transactions> _transactions){
+    public LedgerManager (ArrayList<Transaction> _transactions){
         this.transactions = _transactions;
     }
     
@@ -20,25 +20,25 @@ public class LedgerManager {
 
         description = description.replace("|", "-");
 
-        Transactions newData = new Transactions(currentDate, LocalTime.parse(formatedCurrentTime), description, vendor, Double.parseDouble(amount));
+        Transaction newData = new Transaction(currentDate, LocalTime.parse(formatedCurrentTime), description, vendor, Double.parseDouble(amount));
 
         this.transactions.add(newData);
 
         return new String[]{currentDate.toString(), formatedCurrentTime,description, vendor, amount};
     }
 
-    private void printDisplayFormating (ArrayList<Transactions> listToPrint) {
+    private void printDisplayFormating (ArrayList<Transaction> listToPrint) {
         if(listToPrint.isEmpty()) return;
 
         if(this.transactions.isEmpty()) {
-            System.out.println("\nNo Transactions have been made");
+            System.out.println("\nNo Transaction have been made");
             return;
         }
 
         System.out.println("-".repeat(85));
         System.out.printf("%-11s %-9s %-35s %-17s %5s\n", "Date", "Time", "Description", "Vendor", "Amount");
 
-        for(Transactions items: listToPrint) {
+        for(Transaction items: listToPrint) {
             System.out.printf("%-11tF %-9tT %-35s %-17s $%.2f\n", items.getLocalDate(), items.getLocalTime(), items.getDescription(), items.getVendor(), items.getAmount());
         }
 
@@ -46,23 +46,23 @@ public class LedgerManager {
     }
 
     public void displayAllTransactions() {
-       ArrayList<Transactions> allTransactions = new ArrayList<>();
+       ArrayList<Transaction> allTransactions = new ArrayList<>();
 
-        for(Transactions items: this.transactions) {
-            Transactions transactions = new Transactions(items.getLocalDate(), items.getLocalTime(), items.getDescription(), items.getVendor(), items.getAmount());
-            allTransactions.add(transactions);
+        for(Transaction items: this.transactions) {
+            Transaction transaction = new Transaction(items.getLocalDate(), items.getLocalTime(), items.getDescription(), items.getVendor(), items.getAmount());
+            allTransactions.add(transaction);
         }
 
         printDisplayFormating(allTransactions);
     }
 
     public void displayDepositsOnly() {
-        ArrayList<Transactions> deposits = new ArrayList<>();
+        ArrayList<Transaction> deposits = new ArrayList<>();
 
-        for(Transactions items: this.transactions) {
+        for(Transaction items: this.transactions) {
             if(items.getAmount() >= 0) {
-                Transactions transactions = new Transactions(items.getLocalDate(), items.getLocalTime(), items.getDescription(), items.getVendor(), items.getAmount());
-                deposits.add(transactions);
+                Transaction transaction = new Transaction(items.getLocalDate(), items.getLocalTime(), items.getDescription(), items.getVendor(), items.getAmount());
+                deposits.add(transaction);
             }
         }
 
@@ -70,26 +70,26 @@ public class LedgerManager {
     }
 
     public void displayPaymentsOnly() {
-        ArrayList<Transactions> payments = new ArrayList<>();
+        ArrayList<Transaction> payments = new ArrayList<>();
 
-        for(Transactions items: this.transactions) {
+        for(Transaction items: this.transactions) {
             if(items.getAmount() <= 0) {
-                Transactions transactions = new Transactions(items.getLocalDate(), items.getLocalTime(), items.getDescription(), items.getVendor(), items.getAmount());
-                payments.add(transactions);
+                Transaction transaction = new Transaction(items.getLocalDate(), items.getLocalTime(), items.getDescription(), items.getVendor(), items.getAmount());
+                payments.add(transaction);
             }
         }
 
         printDisplayFormating(payments);
     }
 
-    private void searchByDate(ArrayList<Transactions> dateTransactions, LocalDate startDate, LocalDate endDate) {
-        for(Transactions items: this.transactions) {
+    private void searchByDate(ArrayList<Transaction> dateTransactions, LocalDate startDate, LocalDate endDate) {
+        for(Transaction items: this.transactions) {
             boolean isBeforeOrOnEndDate = items.getLocalDate().equals(endDate) || items.getLocalDate().isBefore(endDate);
             boolean isAfterOrOnStartDate = items.getLocalDate().equals(startDate) || items.getLocalDate().isAfter(startDate);
 
             if(isBeforeOrOnEndDate && isAfterOrOnStartDate) {
-                Transactions transactions = new Transactions(items.getLocalDate(), items.getLocalTime(), items.getDescription(), items.getVendor(), items.getAmount());
-                dateTransactions.add(transactions);
+                Transaction transaction = new Transaction(items.getLocalDate(), items.getLocalTime(), items.getDescription(), items.getVendor(), items.getAmount());
+                dateTransactions.add(transaction);
             }
         }
 
@@ -103,7 +103,7 @@ public class LedgerManager {
      * Displays transactions from Nov 1st, 2026 to Nov 14th, 2026
      */
     public void displayMonthsToDate() {
-        ArrayList<Transactions> dateTransactions = new ArrayList<>();
+        ArrayList<Transaction> dateTransactions = new ArrayList<>();
 
         LocalDate endDate = LocalDate.now();
         LocalDate startDate = LocalDate.now().withDayOfMonth(1);
@@ -119,7 +119,7 @@ public class LedgerManager {
      * Displays transactions from Oct 1st, 2026 to Oct 30th, 2026
      */
     public void displayPreviousMonth() {
-        ArrayList<Transactions> dateTransactions = new ArrayList<>();
+        ArrayList<Transaction> dateTransactions = new ArrayList<>();
 
         LocalDate startDate = LocalDate.now().minusMonths(1).withDayOfMonth(1);
         LocalDate endDate = LocalDate.now().minusMonths(1).withDayOfMonth(31);
@@ -134,7 +134,7 @@ public class LedgerManager {
      * Displays transactions from Jan 1st, 2026 to Nov 14th, 2026
      */
     public void displayYearToDate() {
-        ArrayList<Transactions> dateTransactions = new ArrayList<>();
+        ArrayList<Transaction> dateTransactions = new ArrayList<>();
 
         LocalDate startDate = LocalDate.now().withDayOfYear(1);
         LocalDate endDate = LocalDate.now();
@@ -150,7 +150,7 @@ public class LedgerManager {
      * Displays transactions from Jan 1st, 2025 to Dec 31st, 2025
      */
     public void displayPreviousYear() {
-        ArrayList<Transactions> dateTransactions = new ArrayList<>();
+        ArrayList<Transaction> dateTransactions = new ArrayList<>();
 
         LocalDate startDate = LocalDate.now().minusYears(1).withDayOfYear(1);
         LocalDate endDate = LocalDate.now().minusYears(1).withMonth(12).withDayOfMonth(31);
@@ -159,8 +159,8 @@ public class LedgerManager {
     }
 
 
-    private Transactions searchVendor(String vendor) {
-        for(Transactions items: this.transactions) {
+    private Transaction searchVendor(String vendor) {
+        for(Transaction items: this.transactions) {
             if(items.getVendor().equalsIgnoreCase(vendor)) {
                 return items;
             }
@@ -172,11 +172,11 @@ public class LedgerManager {
     }
 
     public void displayByVendor(String vendor) {
-        ArrayList<Transactions> vendorTransactions = new ArrayList<>();
-        Transactions transaction = searchVendor(vendor);
+        ArrayList<Transaction> vendorTransactions = new ArrayList<>();
+        Transaction transaction = searchVendor(vendor);
 
 
-        for(Transactions ignored : this.transactions) {
+        for(Transaction ignored : this.transactions) {
             if(transaction != null) {
                 vendorTransactions.add(transaction);
             }
@@ -186,9 +186,9 @@ public class LedgerManager {
     }
 
     public void customSearch(LocalDate startDate, LocalDate endDate, String description, String vendor, String amount){
-        ArrayList<Transactions> filteredList = new ArrayList<>();
+        ArrayList<Transaction> filteredList = new ArrayList<>();
 
-        for(Transactions item: this.transactions) {
+        for(Transaction item: this.transactions) {
             boolean isMatch = true;
 
             if(startDate != null) {

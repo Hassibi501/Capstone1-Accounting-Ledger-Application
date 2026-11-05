@@ -1,4 +1,4 @@
-package com.Pluralsight;
+package com.pluralsight;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -6,7 +6,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         String fileName = "test-transactions.csv";
-        ArrayList<Transactions> dataFromFile = LedgerRepository.extractFileData(fileName);
+        ArrayList<Transaction> dataFromFile = LedgerRepository.extractFileData(fileName);
         LedgerManager manager = new LedgerManager(dataFromFile);
 
         Scanner scanner = new Scanner(System.in);
@@ -34,7 +34,5 @@ public class Main {
                     return;
             }//switch
         }//while
-
-
     }
 }

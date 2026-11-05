@@ -1,4 +1,4 @@
-package com.Pluralsight;
+package com.pluralsight;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

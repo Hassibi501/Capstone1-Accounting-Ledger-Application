@@ -1,4 +1,4 @@
-package com.Pluralsight;
+package com.pluralsight;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -8,8 +8,8 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 public class LedgerRepository {
-    public static ArrayList<Transactions> extractFileData(String fileName) {
-        ArrayList<Transactions> transactions = new ArrayList<>();
+    public static ArrayList<Transaction> extractFileData(String fileName) {
+        ArrayList<Transaction> transactions = new ArrayList<>();
         ArrayList<ErrorLogEntry> errorsInFile = new ArrayList<>();
         String currentDateTime = String.valueOf(LocalDateTime.now());
         int currentRow = 1;
@@ -22,33 +22,33 @@ public class LedgerRepository {
                 currentRow++;
 
                 if(line.trim().isEmpty()) {
-                    errorsInFile.add(new ErrorLogEntry("WARNING", currentDateTime, currentRow, "EMPTY_LINE", "NO_EMPTY_LINE", line));
+                    errorsInFile.add(new ErrorLogEntry(fileName,"WARNING", currentDateTime, currentRow, "EMPTY_LINE", "NO_EMPTY_LINE", line));
                     continue;
                 }
 
                 String[] parts = line.split("\\|");
                 
                 if(parts.length != 5) {
-                    errorsInFile.add(new ErrorLogEntry("ERROR", currentDateTime, currentRow, "INVALID_COLUMN_COUNT", "Expected 5 pipe-separated fields", line));
+                    errorsInFile.add(new ErrorLogEntry(fileName,"ERROR", currentDateTime, currentRow, "INVALID_COLUMN_COUNT", "Expected 5 pipe-separated fields", line));
                     continue;
                 }
 
                 if(parts[3].isEmpty()) {
-                    errorsInFile.add(new ErrorLogEntry("ERROR", currentDateTime, currentRow, "MISSING_VENDOR", "Vendor field cannot be empty", line));
+                    errorsInFile.add(new ErrorLogEntry(fileName, "ERROR", currentDateTime, currentRow, "MISSING_VENDOR", "Vendor field cannot be empty", line));
                     continue;
                 }
 
                 try {
                     String formatedVendorName = ConsoleUtils.toTitleCase(parts[3]);
-                    Transactions extractedData = new Transactions(LocalDate.parse(parts[0]), LocalTime.parse(parts[1]), parts[2], formatedVendorName, Double.parseDouble(parts[4]));
+                    Transaction extractedData = new Transaction(LocalDate.parse(parts[0]), LocalTime.parse(parts[1]), parts[2], formatedVendorName, Double.parseDouble(parts[4]));
                     transactions.add(extractedData);
                 }
                 catch (DateTimeParseException e) {
-                    errorsInFile.add(new ErrorLogEntry("ERROR", currentDateTime, currentRow, "DATE_TIME_PARSE_ERROR", "Expected valid calendar date (yyyy-MM-dd) and time (HH:mm:ss)", line));
+                    errorsInFile.add(new ErrorLogEntry(fileName, "ERROR", currentDateTime, currentRow, "DATE_TIME_PARSE_ERROR", "Expected valid calendar date (yyyy-MM-dd) and time (HH:mm:ss)", line));
 
                 }
                 catch (NumberFormatException e) {
-                    errorsInFile.add(new ErrorLogEntry("ERROR", currentDateTime, currentRow, "AMOUNT_PARSE_ERROR", "Expected valid numeric decimal for amount", line));
+                    errorsInFile.add(new ErrorLogEntry(fileName,"ERROR", currentDateTime, currentRow, "AMOUNT_PARSE_ERROR", "Expected valid numeric decimal for amount", line));
                 }
 
             }//while
@@ -60,7 +60,11 @@ public class LedgerRepository {
         if(!errorsInFile.isEmpty()) {
             BatchLogWriter.loggingErrorsToJson(errorsInFile, fileName);
         }
-        System.out.printf("File loaded. %d transactions imported successfully. %d records skipped due to data errors (Check logs/ for details).\n", transactions.size(), errorsInFile.size());
+        System.out.printf("""
+                File: \"%s\" loaded.
+                %d transactions imported successfully.
+                %d records skipped due to data errors (Check logs/ for details).
+                """, fileName, transactions.size(), errorsInFile.size());
         return transactions;
     }
 
