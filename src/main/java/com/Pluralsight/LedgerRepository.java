@@ -2,6 +2,7 @@ package com.Pluralsight;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -9,25 +10,30 @@ import java.util.ArrayList;
 public class LedgerRepository {
     public static ArrayList<Transactions> extractFileData(String fileName) {
         ArrayList<Transactions> transactions = new ArrayList<>();
+        ArrayList<ErrorLogger> errorsInFile = new ArrayList<>();
+        int currentRow = 1;
+
 
         try(BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))) {
             String line;
             bufferedReader.readLine();
             while((line = bufferedReader.readLine()) != null) {
+                currentRow++;
 
                 if(line.trim().isEmpty()) {
+                    errorsInFile.add(new ErrorLogger("WARNING", LocalDateTime.now(), currentRow, "EMPTY_LINE", "NO_EMPTY_LINE", line));
                     continue;
                 }
 
                 String[] parts = line.split("\\|");
                 
                 if(parts.length != 5) {
-                    System.out.printf("Error: [%s] - Out of bound. There can only be 4 pipes (|). Please correct data formating (LocalDate date|LocalTime time|String description|String vendor|Double amount).\n", line);
+                    errorsInFile.add(new ErrorLogger("ERROR", LocalDateTime.now(), currentRow, "INVALID_COLUMN_COUNT", "Expected 5 pipe-separated fields", line));
                     continue;
                 }
 
                 if(parts[3].isEmpty()) {
-                    System.out.printf("Error: [%s] - Vendor field can not be empty. Please correct vendor name field.\n", line);
+                    errorsInFile.add(new ErrorLogger("ERROR", LocalDateTime.now(), currentRow, "MISSING_VENDOR", "Vendor field cannot be empty", line));
                     continue;
                 }
 
@@ -37,11 +43,13 @@ public class LedgerRepository {
                     transactions.add(extractedData);
                 }
                 catch (DateTimeParseException e) {
-                    System.out.printf("Error: [%s] - Invalid date formate, time format, or date does not exist on the calendar. Please correct date (yyyy-MM-dd) formate, time (HH:mm:ss) formate, or correct non-existing date.\n", line);
+                    errorsInFile.add(new ErrorLogger("ERROR", LocalDateTime.now(), currentRow, "DATE_TIME_PARSE_ERROR", "Expected valid calendar date (yyyy-MM-dd) and time (HH:mm:ss)", line));
+
                 }
                 catch (NumberFormatException e) {
-                    System.out.printf("Error: [%s] - Invalid amount format. Please correct double format.\n", line);
+                    errorsInFile.add(new ErrorLogger("ERROR", LocalDateTime.now(), currentRow, "AMOUNT_PARSE_ERROR", "Expected valid numeric decimal for amount", line));
                 }
+
             }//while
         }
         catch (IOException e) {

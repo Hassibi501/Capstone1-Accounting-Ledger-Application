@@ -18,6 +18,8 @@ public class LedgerManager {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String formatedCurrentTime = currentTime.format(formatter);
 
+        description = description.replace("|", "-");
+
         Transactions newData = new Transactions(currentDate, LocalTime.parse(formatedCurrentTime), description, vendor, Double.parseDouble(amount));
 
         this.transactions.add(newData);
