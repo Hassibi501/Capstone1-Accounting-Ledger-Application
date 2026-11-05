@@ -10,7 +10,8 @@ import java.util.ArrayList;
 public class LedgerRepository {
     public static ArrayList<Transactions> extractFileData(String fileName) {
         ArrayList<Transactions> transactions = new ArrayList<>();
-        ArrayList<ErrorLogger> errorsInFile = new ArrayList<>();
+        ArrayList<ErrorLogEntry> errorsInFile = new ArrayList<>();
+        String currentDateTime = String.valueOf(LocalDateTime.now());
         int currentRow = 1;
 
 
@@ -21,19 +22,19 @@ public class LedgerRepository {
                 currentRow++;
 
                 if(line.trim().isEmpty()) {
-                    errorsInFile.add(new ErrorLogger("WARNING", LocalDateTime.now(), currentRow, "EMPTY_LINE", "NO_EMPTY_LINE", line));
+                    errorsInFile.add(new ErrorLogEntry("WARNING", currentDateTime, currentRow, "EMPTY_LINE", "NO_EMPTY_LINE", line));
                     continue;
                 }
 
                 String[] parts = line.split("\\|");
                 
                 if(parts.length != 5) {
-                    errorsInFile.add(new ErrorLogger("ERROR", LocalDateTime.now(), currentRow, "INVALID_COLUMN_COUNT", "Expected 5 pipe-separated fields", line));
+                    errorsInFile.add(new ErrorLogEntry("ERROR", currentDateTime, currentRow, "INVALID_COLUMN_COUNT", "Expected 5 pipe-separated fields", line));
                     continue;
                 }
 
                 if(parts[3].isEmpty()) {
-                    errorsInFile.add(new ErrorLogger("ERROR", LocalDateTime.now(), currentRow, "MISSING_VENDOR", "Vendor field cannot be empty", line));
+                    errorsInFile.add(new ErrorLogEntry("ERROR", currentDateTime, currentRow, "MISSING_VENDOR", "Vendor field cannot be empty", line));
                     continue;
                 }
 
@@ -43,11 +44,11 @@ public class LedgerRepository {
                     transactions.add(extractedData);
                 }
                 catch (DateTimeParseException e) {
-                    errorsInFile.add(new ErrorLogger("ERROR", LocalDateTime.now(), currentRow, "DATE_TIME_PARSE_ERROR", "Expected valid calendar date (yyyy-MM-dd) and time (HH:mm:ss)", line));
+                    errorsInFile.add(new ErrorLogEntry("ERROR", currentDateTime, currentRow, "DATE_TIME_PARSE_ERROR", "Expected valid calendar date (yyyy-MM-dd) and time (HH:mm:ss)", line));
 
                 }
                 catch (NumberFormatException e) {
-                    errorsInFile.add(new ErrorLogger("ERROR", LocalDateTime.now(), currentRow, "AMOUNT_PARSE_ERROR", "Expected valid numeric decimal for amount", line));
+                    errorsInFile.add(new ErrorLogEntry("ERROR", currentDateTime, currentRow, "AMOUNT_PARSE_ERROR", "Expected valid numeric decimal for amount", line));
                 }
 
             }//while
@@ -56,6 +57,10 @@ public class LedgerRepository {
             e.getStackTrace();
         }
 
+        if(!errorsInFile.isEmpty()) {
+            BatchLogWriter.loggingErrorsToJson(errorsInFile, fileName);
+        }
+        System.out.printf("File loaded. %d transactions imported successfully. %d records skipped due to data errors (Check logs/ for details).\n", transactions.size(), errorsInFile.size());
         return transactions;
     }
 
