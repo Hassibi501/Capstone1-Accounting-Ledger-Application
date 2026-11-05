@@ -3,6 +3,7 @@ package com.Pluralsight;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 public class LedgerRepository {
@@ -14,12 +15,35 @@ public class LedgerRepository {
             bufferedReader.readLine();
             while((line = bufferedReader.readLine()) != null) {
 
+                if(line.trim().isEmpty()) {
+                    bufferedReader.readLine();
+                    continue;
+                }
+
                 String[] parts = line.split("\\|");
+                
+                if(parts.length != 5) {
+                    System.out.printf("Error: [%s] - Out of bound. There can only be 4 pipes (|). Please correct data formating (LocalDate date|LocalTime time|String description|String vendor|Double amount).\n", line);
+                    continue;
+                }
 
-                Transactions extractedData = new Transactions(LocalDate.parse(parts[0]), LocalTime.parse(parts[1]), parts[2], parts[3], Double.parseDouble(parts[4]));
+                if(parts[3].isEmpty()) {
+                    System.out.printf("Error: [%s] - Vendor field can not be empty. Please correct vendor name field.\n", line);
+                    continue;
+                }
 
-                transactions.add(extractedData);
-            }
+                try {
+                    String formatedVendorName = ConsoleUtils.toTitleCase(parts[3]);
+                    Transactions extractedData = new Transactions(LocalDate.parse(parts[0]), LocalTime.parse(parts[1]), parts[2], formatedVendorName, Double.parseDouble(parts[4]));
+                    transactions.add(extractedData);
+                }
+                catch (DateTimeParseException e) {
+                    System.out.printf("Error: [%s] - Invalid date formate, time format, or date does not exist on the calendar. Please correct date (yyyy-MM-dd) formate, time (HH:mm:ss) formate, or correct non-existing date.\n", line);
+                }
+                catch (NumberFormatException e) {
+                    System.out.printf("Error: [%s] - Invalid amount format. Please correct double format.\n", line);
+                }
+            }//while
         }
         catch (IOException e) {
             e.getStackTrace();
@@ -37,7 +61,7 @@ public class LedgerRepository {
             System.out.println("Successfully appended new item to transactions.");
 
         }
-        catch(IOException e ) {
+        catch(IOException e) {
             e.getStackTrace();
         }
     }

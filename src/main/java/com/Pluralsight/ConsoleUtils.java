@@ -174,6 +174,23 @@ public class ConsoleUtils {
         }
     }
 
+    public static void getUserInputForTransactions (Scanner scanner, String fileName, LedgerManager manager,  boolean isNegative){
+        String description = getValidUserInput(scanner, "Enter deposit description:", "^.+$", "Error: Please enter valid input");
+        String vendorRaw = getValidUserInput(scanner, "Enter deposit vendor:", "^[a-zA-Z0-9 '&.-]+$$", "Error: Please enter valid input");
+        String vendor = toTitleCase(vendorRaw);
+        String amount;
+
+        if(!isNegative) {
+            amount = getValidUserInput(scanner, "Enter amount of money for the deposit:", "^\\d+(\\.?\\d{2})?$", "Error: Please enter valid input (12.22).");
+        }
+        else {
+            amount = "-" + getValidUserInput(scanner, "Enter amount of money for the payment:", "^\\d+(\\.?\\d{2})?$", "Error: Please enter valid input (12.22).");
+        }
+
+        String[] newDepositEntry = manager.addTransaction(description, vendor, amount);
+        LedgerRepository.appendDataToFile(fileName, newDepositEntry);
+    }
+
     public static LocalDate getValidDateInput(Scanner scanner, String promptMessage, String regex, String errorMessage){
         while (true) {
             String dateRaw = getValidUserInput(scanner, promptMessage, regex, errorMessage, false);
