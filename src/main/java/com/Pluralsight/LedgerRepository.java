@@ -16,7 +16,6 @@ public class LedgerRepository {
             while((line = bufferedReader.readLine()) != null) {
 
                 if(line.trim().isEmpty()) {
-                    bufferedReader.readLine();
                     continue;
                 }
 
