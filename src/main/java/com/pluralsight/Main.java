@@ -6,7 +6,14 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        String fileName = "test-transactions.csv";
+        String fileName;
+        if (args.length > 0) {
+            fileName = args[0];
+        }
+        else{
+            fileName = "transactions.csv";
+        }
+
         ArrayList<Transaction> dataFromFile = LedgerRepository.extractFileData(fileName);
         LedgerManager manager = new LedgerManager(dataFromFile);
 
