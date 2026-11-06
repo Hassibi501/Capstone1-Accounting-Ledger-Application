@@ -9,24 +9,23 @@ A straightforward command-line application built in Java to help track and manag
 *   **Custom Searches:** Search your transaction history by specific dates, vendors, or amounts.
 *   **Data Validation:** Safely reads from the CSV file and logs any corrupted data rows into a dedicated JSON error log without crashing the app.
 
-## Screenshots
+### Screenshots
 
-**Main Menu**
-![](/var/mnt/SharedData/Projects/Java Projects/Pluralsight/3-Capstones/Capstone-1-Accounting-Ledger-Application/Read-Me-Images/homescreen.png)
+**Main Menu**  
+![Main Menu](Read-Me-Images/homescreen.png)
 
-**Viewing the Ledger**
-![](/var/mnt/SharedData/Projects/Java Projects/Pluralsight/3-Capstones/Capstone-1-Accounting-Ledger-Application/Read-Me-Images/ledgert.png)
+**Viewing the Ledger**  
+![Viewing Ledger 1](Read-Me-Images/ledgert.png)  
+![Viewing Ledger 2](Read-Me-Images/ledger2.png)
 
-![](/var/mnt/SharedData/Projects/Java Projects/Pluralsight/3-Capstones/Capstone-1-Accounting-Ledger-Application/Read-Me-Images/ledger2..png)
+**Reports**  
+![Reports Menu](Read-Me-Images/reports.png)
 
-**Reports**
-![](/var/mnt/SharedData/Projects/Java Projects/Pluralsight/3-Capstones/Capstone-1-Accounting-Ledger-Application/Read-Me-Images/reports.png)
+**Custom Search**  
+![Custom Search](Read-Me-Images/customsearch.png)
 
-**Custom Search**
-![](/var/mnt/SharedData/Projects/Java Projects/Pluralsight/3-Capstones/Capstone-1-Accounting-Ledger-Application/Read-Me-Images/customsearch.png)
-
-**Error Logging**
-![](/var/mnt/SharedData/Projects/Java Projects/Pluralsight/3-Capstones/Capstone-1-Accounting-Ledger-Application/Read-Me-Images/errorloggingpng.png)
+**Error Logging**  
+![Error Logging](Read-Me-Images/errorloggingpng.png)
 
 ## How to Run
 
