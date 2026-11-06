@@ -37,31 +37,57 @@ public class LedgerManager {
         System.out.println("-".repeat(85));
         System.out.printf("%-11s %-9s %-35s %-17s %5s\n", "Date", "Time", "Description", "Vendor", "Amount");
 
-        for(Transaction items: listToPrint) {
-            System.out.printf("%-11tF %-9tT %-35s %-17s $%.2f\n", items.getLocalDate(), items.getLocalTime(), items.getDescription(), items.getVendor(), items.getAmount());
+        for(Transaction item: listToPrint) {
+            System.out.printf("%-11tF %-9tT %-35s %-17s $%.2f\n", item.getLocalDate(), item.getLocalTime(), item.getDescription(), item.getVendor(), item.getAmount());
         }
 
         System.out.println("-".repeat(85));
     }
 
     public void displayAllTransactions() {
-       ArrayList<Transaction> allTransactions = new ArrayList<>();
+        /*
+         * Version 1: Create a duplicate Transaction object for every item.
+         *
+         * ArrayList<Transaction> allTransactions = new ArrayList<>();
+         *
+         * for (Transaction item : this.transactions) {
+         *     Transaction transaction = new Transaction(item.getLocalDate(), item.getLocalTime(), tem.getDescription(), item.getVendor(), item.getAmount());
+         *     allTransactions.add(transaction);
+         * }
+         *
+         * printDisplayFormating(allTransactions);
+         */
 
-        for(Transaction items: this.transactions) {
-            Transaction transaction = new Transaction(items.getLocalDate(), items.getLocalTime(), items.getDescription(), items.getVendor(), items.getAmount());
-            allTransactions.add(transaction);
-        }
+        /*
+         * Version 2: Reuse the existing Transaction objects instead of creating duplicates.
+         *
+         * ArrayList<Transaction> allTransactions = new ArrayList<>();
+         *
+         * for (Transaction item : this.transactions) {
+         *     allTransactions.add(item);
+         * }
+         *
+         * printDisplayFormating(allTransactions);
+         */
 
-        printDisplayFormating(allTransactions);
+        /*
+         * Version 3: Add all existing Transaction references to a new list at once.
+         *
+         * ArrayList<Transaction> allTransactions = new ArrayList<>();
+         * allTransactions.addAll(this.transactions);
+         *
+         * printDisplayFormating(allTransactions);
+         */
+
+        printDisplayFormating(this.transactions);
     }
 
     public void displayDepositsOnly() {
         ArrayList<Transaction> deposits = new ArrayList<>();
 
-        for(Transaction items: this.transactions) {
-            if(items.getAmount() >= 0) {
-                Transaction transaction = new Transaction(items.getLocalDate(), items.getLocalTime(), items.getDescription(), items.getVendor(), items.getAmount());
-                deposits.add(transaction);
+        for(Transaction item: this.transactions) {
+            if(item.getAmount() >= 0) {
+                deposits.add(item);
             }
         }
 
@@ -71,10 +97,9 @@ public class LedgerManager {
     public void displayPaymentsOnly() {
         ArrayList<Transaction> payments = new ArrayList<>();
 
-        for(Transaction items: this.transactions) {
-            if(items.getAmount() <= 0) {
-                Transaction transaction = new Transaction(items.getLocalDate(), items.getLocalTime(), items.getDescription(), items.getVendor(), items.getAmount());
-                payments.add(transaction);
+        for(Transaction item: this.transactions) {
+            if(item.getAmount() <= 0) {
+                payments.add(item);
             }
         }
 
@@ -82,13 +107,12 @@ public class LedgerManager {
     }
 
     private void searchByDate(ArrayList<Transaction> dateTransactions, LocalDate startDate, LocalDate endDate) {
-        for(Transaction items: this.transactions) {
-            boolean isBeforeOrOnEndDate = items.getLocalDate().equals(endDate) || items.getLocalDate().isBefore(endDate);
-            boolean isAfterOrOnStartDate = items.getLocalDate().equals(startDate) || items.getLocalDate().isAfter(startDate);
+        for(Transaction item: this.transactions) {
+            boolean isBeforeOrOnEndDate = item.getLocalDate().equals(endDate) || item.getLocalDate().isBefore(endDate);
+            boolean isAfterOrOnStartDate = item.getLocalDate().equals(startDate) || item.getLocalDate().isAfter(startDate);
 
             if(isBeforeOrOnEndDate && isAfterOrOnStartDate) {
-                Transaction transaction = new Transaction(items.getLocalDate(), items.getLocalTime(), items.getDescription(), items.getVendor(), items.getAmount());
-                dateTransactions.add(transaction);
+                dateTransactions.add(item);
             }
         }
 
@@ -160,9 +184,9 @@ public class LedgerManager {
     public void displayByVendor(String vendor) {
         ArrayList<Transaction> vendorTransactions = new ArrayList<>();
 
-        for(Transaction items : this.transactions) {
-            if(Objects.equals(items.getVendor(), vendor)) {
-                vendorTransactions.add(items);
+        for(Transaction item : this.transactions) {
+            if(Objects.equals(item.getVendor(), vendor)) {
+                vendorTransactions.add(item);
             }
         }
 
