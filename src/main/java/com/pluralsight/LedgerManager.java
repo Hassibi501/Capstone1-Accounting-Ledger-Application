@@ -52,7 +52,7 @@ public class LedgerManager {
         System.out.printf("%-11s %-9s %-35s %-17s %5s\n", "Date", "Time", "Description", "Vendor", "Amount");
 
         for(Transaction item: listToPrint) {
-            System.out.printf("%-11tF %-9tT %-35s %-17s $%.2f\n", item.getLocalDate(), item.getLocalTime(), item.getDescription(), item.getVendor(), item.getAmount());
+            System.out.printf("%-11tF %-9tT %-35s %-17s $%-8.2f\n", item.getLocalDate(), item.getLocalTime(), item.getDescription(), item.getVendor(), item.getAmount());
         }
 
         System.out.println("-".repeat(85));

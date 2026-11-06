@@ -17,15 +17,18 @@ public class LedgerRepository {
         ArrayList<Transaction> transactions = new ArrayList<>();
         ArrayList<ErrorLogEntry> errorsInFile = new ArrayList<>();
         String currentDateTime = String.valueOf(LocalDateTime.now());
-        int currentRow = 1;
-
+        int currentRow = 0;
 
         try(BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))) {
             String line;
-            // Consume and discard the CSV header row before parsing transaction records
-            bufferedReader.readLine();
+
             while((line = bufferedReader.readLine()) != null) {
                 currentRow++;
+
+                // Safely ignores the exact header string, but only if it appears on the first line.
+                if (currentRow == 1 && line.matches("^[a-zA-Z].*")) {
+                    continue;
+                }
 
                 if(line.trim().isEmpty()) {
                     errorsInFile.add(new ErrorLogEntry(fileName,"WARNING", currentDateTime, currentRow, "EMPTY_LINE", "NO_EMPTY_LINE", line));
