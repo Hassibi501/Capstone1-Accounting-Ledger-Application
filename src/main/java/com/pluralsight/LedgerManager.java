@@ -36,6 +36,7 @@ public class LedgerManager {
 
         Transaction newData = new Transaction(currentDate, LocalTime.parse(formatedCurrentTime), description, vendor, Double.parseDouble(amount));
         this.transactions.add(newData);
+        sortTransaction();
 
         return new String[]{currentDate.toString(), formatedCurrentTime,description, vendor, amount};
     }
