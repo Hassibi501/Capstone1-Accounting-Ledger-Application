@@ -8,6 +8,11 @@ import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
 public class LedgerRepository {
+    /**
+     * Parses pipe-delimited transaction records while isolating malformed rows.
+     * Instead of crashing on corrupt CSV lines, invalid records are captured in an
+     * error collection and flushed to a structured JSON audit log for debugging.
+     */
     public static ArrayList<Transaction> extractFileData(String fileName) {
         ArrayList<Transaction> transactions = new ArrayList<>();
         ArrayList<ErrorLogEntry> errorsInFile = new ArrayList<>();
@@ -17,6 +22,7 @@ public class LedgerRepository {
 
         try(BufferedReader bufferedReader = new BufferedReader(new FileReader(fileName))) {
             String line;
+            // Consume and discard the CSV header row before parsing transaction records
             bufferedReader.readLine();
             while((line = bufferedReader.readLine()) != null) {
                 currentRow++;
@@ -65,6 +71,12 @@ public class LedgerRepository {
                 fileName, transactions.size(), errorsInFile.size());
         return transactions;
     }
+
+    /**
+     * Inspects only the final byte of the file in O(1) time using RandomAccessFile
+     * rather than reading the entire file into memory, preventing corrupted rows
+     * when appending new transactions to a file that lacks a trailing newline.
+     */
     private static boolean fileEndsWithNewLine(String fileName) throws IOException {
         try(RandomAccessFile file = new RandomAccessFile(fileName, "r")) {
             long fileLength = file.length();

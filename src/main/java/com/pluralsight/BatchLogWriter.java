@@ -12,6 +12,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class BatchLogWriter {
+    /**
+     * Serializes malformed CSV import rows into a timestamped, pretty-printed JSON file
+     * using Google Gson so data errors are preserved without halting the CLI.
+     */
     public static void loggingErrorsToJson(ArrayList<ErrorLogEntry> errorList) {
         LocalDateTime currentDateTimeRaw = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH_mm_ss");

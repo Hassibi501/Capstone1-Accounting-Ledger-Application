@@ -107,7 +107,7 @@ public class ConsoleUtils {
                     break;
                 case 5:
                     printSectionHeader("Search by Vendor");
-                    vendorRaw = getValidUserInput(scanner, "Enter vendor's name:", "^[a-zA-Z0-9 '&.-]+$$", "Error: Please enter valid input");
+                    vendorRaw = getValidUserInput(scanner, "Enter vendor's name:", "^[a-zA-Z0-9 '&.-]+$", "Error: Please enter valid input");
                     vendor = toTitleCase(vendorRaw);
                     manager.displayByVendor(vendor);
                     break;
@@ -150,6 +150,11 @@ public class ConsoleUtils {
         return getValidUserInput(scanner, promptMessage, regex, errorMessage, true);
     }
 
+    /**
+     * Centralized input-validation loop using regular expressions.
+     * Overloaded with `inputIsRequired` so the same validator supports both mandatory
+     * prompts (menu/transactions) and optional blank-skipping prompts (Custom Search).
+     */
     public static String getValidUserInput(Scanner scanner, String promptMessage, String regex, String errorMessage, boolean inputIsRequired){
         while(true){
             System.out.print(promptMessage + " ");
@@ -176,7 +181,6 @@ public class ConsoleUtils {
     }
 
     public static void getUserInputForTransactions (Scanner scanner, String fileName, String transactionType, LedgerManager manager,  boolean isNegative){
-
         String descPromptMsg = "Enter %s description:".formatted(transactionType);
         String venPromptMsg = "Enter %s vendor:".formatted(transactionType);
 
@@ -196,6 +200,10 @@ public class ConsoleUtils {
         LedgerRepository.appendDataToFile(fileName, newDepositEntry);
     }
 
+    /**
+     * Two-stage date validation: regex verifies structural formatting (yyyy-MM-dd) first,
+     * then LocalDate.parse() catches impossible calendar dates (e.g., 2026-02-30).
+     */
     public static LocalDate getValidDateInput(Scanner scanner, String promptMessage, String regex, String errorMessage){
         while (true) {
             String dateRaw = getValidUserInput(scanner, promptMessage, regex, errorMessage, false);

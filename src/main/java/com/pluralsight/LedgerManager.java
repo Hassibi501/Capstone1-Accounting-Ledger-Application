@@ -15,6 +15,8 @@ public class LedgerManager {
         sortTransaction();
     }
 
+    // Enforces the requirement to display newest entries first by chaining
+    // date and time comparators in descending (reversed) chronological order.
     private void sortTransaction() {
         this.transactions.sort(
                 Comparator.comparing(Transaction::getLocalDate)
@@ -29,11 +31,10 @@ public class LedgerManager {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         String formatedCurrentTime = currentTime.format(formatter);
 
+        // Sanitize pipe characters from user input to prevent corrupting the pipe-delimited CSV structure
         description = description.replace("|", "-");
 
         Transaction newData = new Transaction(currentDate, LocalTime.parse(formatedCurrentTime), description, vendor, Double.parseDouble(amount));
-
-        this.transactions.add(newData);
         this.transactions.add(newData);
 
         return new String[]{currentDate.toString(), formatedCurrentTime,description, vendor, amount};
@@ -91,6 +92,8 @@ public class LedgerManager {
          * printDisplayFormating(allTransactions);
          */
 
+        // Passes the underlying list reference directly to avoid O(n) memory overhead
+        // from cloning Transaction objects or allocating redundant intermediate lists.
         printDisplayFormating(this.transactions);
     }
 
@@ -157,8 +160,7 @@ public class LedgerManager {
         ArrayList<Transaction> dateTransactions = new ArrayList<>();
 
         LocalDate startDate = LocalDate.now().minusMonths(1).withDayOfMonth(1);
-        LocalDate endDate = LocalDate.now().minusMonths(1).withDayOfMonth(31);
-
+        LocalDate endDate = startDate.withDayOfMonth(startDate.lengthOfMonth());
         searchByDate(dateTransactions, startDate, endDate);
     }
 
@@ -188,8 +190,7 @@ public class LedgerManager {
         ArrayList<Transaction> dateTransactions = new ArrayList<>();
 
         LocalDate startDate = LocalDate.now().minusYears(1).withDayOfYear(1);
-        LocalDate endDate = LocalDate.now().minusYears(1).withMonth(12).withDayOfMonth(startDate.getDayOfMonth());
-
+        LocalDate endDate = LocalDate.now().minusYears(1).withMonth(12).withDayOfMonth(31);
         searchByDate(dateTransactions, startDate, endDate);
     }
 
@@ -205,6 +206,10 @@ public class LedgerManager {
         printDisplayFormating(vendorTransactions);
     }
 
+    /**
+     * Evaluates transactions against optional filter criteria using a progressive elimination
+     * pattern: every record starts as a candidate and is excluded only when a non-empty filter fails.
+     */
     public void customSearch(LocalDate startDate, LocalDate endDate, String description, String vendor, String amount){
         ArrayList<Transaction> filteredList = new ArrayList<>();
 
