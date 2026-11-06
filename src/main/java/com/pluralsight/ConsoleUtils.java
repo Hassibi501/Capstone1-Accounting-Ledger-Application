@@ -6,8 +6,12 @@ import java.util.Locale;
 import java.util.Scanner;
 
 public class ConsoleUtils {
+    public static void printSectionHeader(String title) {
+        System.out.println("\n--- " + title + " ---");
+    }
+
     public static void displayHomeScreenMenu(){
-        System.out.println("""
+        printMenu("""
                 -------------------------------
                 D) Add Deposit
                 P) Make Payment (Debit)
@@ -17,7 +21,7 @@ public class ConsoleUtils {
                 """);
     }
     private static void displayLedgerMenu(){
-        System.out.println("""
+        printMenu("""
                 -------------------------------
                 A) All Transactions
                 D) Deposits
@@ -29,7 +33,7 @@ public class ConsoleUtils {
     }
 
     private static void displayReportsMenu(){
-        System.out.println("""
+        printMenu("""
                 -------------------------------
                 1) Month To Date
                 2) Previous Month
@@ -42,6 +46,10 @@ public class ConsoleUtils {
                 """);
     }
 
+    private static void printMenu(String menu) {
+        System.out.println("\n" + menu.strip());
+    }
+
     public static void runLedgerMenu(Scanner scanner, LedgerManager manager){
         String userInput;
         while(true) {
@@ -50,26 +58,23 @@ public class ConsoleUtils {
 
             switch (userInput) {
                 case "A":
-                    System.out.println("display all entries");
+                    printSectionHeader("All Transactions");
                     manager.displayAllTransactions();
-                    System.out.println();
                     break;
                 case "D":
-                    System.out.println("display deposits");
+                    printSectionHeader("Deposits");
                     manager.displayDepositsOnly();
-                    System.out.println();
                     break;
                 case "P":
-                    System.out.println("display payments");
+                    printSectionHeader("Payments");
                     manager.displayPaymentsOnly();
-                    System.out.println();
                     break;
                 case "R":
-                    System.out.println("display report");
+                    printSectionHeader("Reports");
                     runReportsMenu(scanner, manager);
                     break;
                 case "H":
-                    System.out.println("going back to main menu...");
+                    System.out.println("\nReturning to main menu...\n");
                     return;
             }//switch
         }//while
@@ -85,35 +90,30 @@ public class ConsoleUtils {
 
             switch (userInput) {
                 case 1:
-                    System.out.println("Month To Date");
+                    printSectionHeader("Month To Date");
                     manager.displayMonthsToDate();
-                    System.out.println();
                     break;
                 case 2:
-
-                    System.out.println("Previous Month");
+                    printSectionHeader("Previous Month");
                     manager.displayPreviousMonth();
-                    System.out.println();
                     break;
                 case 3:
-                    System.out.println("Year To Date");
+                    printSectionHeader("Year To Date");
                     manager.displayYearToDate();
-                    System.out.println();
                     break;
                 case 4:
-                    System.out.println("Previous  year");
+                    printSectionHeader("Previous Year");
                     manager.displayPreviousYear();
-                    System.out.println();
                     break;
                 case 5:
-                    System.out.println("search by vendor");
+                    printSectionHeader("Search by Vendor");
                     vendorRaw = getValidUserInput(scanner, "Enter vendor's name:", "^[a-zA-Z0-9 '&.-]+$$", "Error: Please enter valid input");
                     vendor = toTitleCase(vendorRaw);
                     manager.displayByVendor(vendor);
-                    System.out.println();
                     break;
                 case 6:
-                    System.out.println("Custom search: Search by any or more fields (Start Date, End Date, Description, Vendor, Amount, or Enter to Skip");
+                    printSectionHeader("Custom Search");
+                    System.out.println("Search by any or more fields. Press Enter to skip a field.");
                     LocalDate startDate = getValidDateInput(scanner, "Enter the Start Date of the transaction you're looking for (yyyy-MM-dd): ", "^\\d{4}-\\d{2}-\\d{2}$", "Error: Please enter proper date format (yyyy-MM-dd):");
                     LocalDate endDate = getValidDateInput(scanner, "Enter the End Date of the transaction you're looking for (yyyy-MM-dd): ", "^\\d{4}-\\d{2}-\\d{2}$", "Error: Please enter proper date format (yyyy-MM-dd):");
                     String description = ConsoleUtils.getValidUserInput(scanner, "Enter transaction's description:", "^.+$", "Error: Please enter valid input", false);
@@ -121,10 +121,9 @@ public class ConsoleUtils {
                     vendor = toTitleCase(vendorRaw);
                     String amountRaw = getValidUserInput(scanner, "Enter the amount of money for transaction:", "^-?\\d+(\\.?\\d{2})?$", "Error: Please enter valid input (12.22 or -12.22).", false);
                     manager.customSearch(startDate, endDate, description, vendor, amountRaw);
-                    System.out.println();
                     break;
                 case 0:
-                    System.out.println("going back to main menu...");
+                    System.out.println("\nReturning to ledger menu...\n");
                     return;
             }//switch
         }//while
@@ -153,13 +152,13 @@ public class ConsoleUtils {
 
     public static String getValidUserInput(Scanner scanner, String promptMessage, String regex, String errorMessage, boolean inputIsRequired){
         while(true){
-            System.out.println(promptMessage);
+            System.out.print(promptMessage + " ");
 
             String userInput = scanner.nextLine();
 
             if(userInput.isEmpty()){
                 if(inputIsRequired) {
-                    System.out.println("Error: Input was empty. Please enter valid input. ");
+                    System.out.println("\nError: Input was empty. Please enter valid input.");
                     continue;
                 }
                 else {
@@ -168,7 +167,7 @@ public class ConsoleUtils {
             }
 
             if (!userInput.matches(regex)){
-                System.out.println(errorMessage);
+                System.out.println("\n" + errorMessage);
                 continue;
             }
 

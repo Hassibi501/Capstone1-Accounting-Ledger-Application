@@ -40,11 +40,12 @@ public class LedgerManager {
     }
 
     private void printDisplayFormating (ArrayList<Transaction> listToPrint) {
+        System.out.println();
         if(listToPrint.isEmpty()) {
-            System.out.println("\nNo Transaction have been made or incorrect search query.");
+            System.out.println("No transactions found for the selected search.");
+            System.out.println();
             return;
         }
-
         System.out.println("-".repeat(85));
         System.out.printf("%-11s %-9s %-35s %-17s %5s\n", "Date", "Time", "Description", "Vendor", "Amount");
 

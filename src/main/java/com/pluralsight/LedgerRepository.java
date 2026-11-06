@@ -60,11 +60,9 @@ public class LedgerRepository {
         if(!errorsInFile.isEmpty()) {
             BatchLogWriter.loggingErrorsToJson(errorsInFile);
         }
-        System.out.printf("""
-                File: "%s" loaded.
-                %d transactions imported successfully.
-                %d records skipped due to data errors (Check logs/ for details).
-                """, fileName, transactions.size(), errorsInFile.size());
+        System.out.printf("\nFile: \"%s\" loaded.%n%d transactions imported successfully.%n"
+                        + "%d records skipped due to data errors (Check logs/ for details).%n",
+                fileName, transactions.size(), errorsInFile.size());
         return transactions;
     }
     private static boolean fileEndsWithNewLine(String fileName) throws IOException {
@@ -98,13 +96,13 @@ public class LedgerRepository {
                 String input = String.format("%s|%s|%s|%s|%s\n", dataToAppend[0].trim(), dataToAppend[1].trim(), dataToAppend[2].trim(),dataToAppend[3].trim(), dataToAppend[4].trim());
 
                 bufferedWriter.write(input);
-                System.out.println("Successfully appended new item to transactions.");
+                System.out.println("\nSuccessfully appended new item to transactions.\n");
 
             }
         }
 
         catch(IOException e) {
-            System.out.println("Unable to append to " + fileName);
+            System.out.println("\nUnable to append to " + fileName + "\n");
             e.printStackTrace();
         }
     }

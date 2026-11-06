@@ -23,22 +23,19 @@ public class Main {
             String userInput = ConsoleUtils.getValidUserInput(scanner, "Enter menu option (D,P,L,X)", "^[DPLXdplx]$", "Error: Please enter valid menu options (D,P,L,X)").toUpperCase(Locale.ROOT);
             switch (userInput) {
                 case "D":
-                    System.out.println("Add deposit");
+                    ConsoleUtils.printSectionHeader("Add Deposit");
                     ConsoleUtils.getUserInputForTransactions(scanner, fileName, "deposit",  manager, false);
-                    System.out.println();
                     break;
                 case "P":
-                    System.out.println("Make a payment");
+                    ConsoleUtils.printSectionHeader("Make a Payment");
                     ConsoleUtils.getUserInputForTransactions(scanner, fileName, "payment",  manager, true);
-                    System.out.println();
                     break;
                 case "L":
-                    System.out.println("ledger");
+                    ConsoleUtils.printSectionHeader("Ledger");
                     ConsoleUtils.runLedgerMenu(scanner, manager);
-                    System.out.println();
                     break;
                 case "X":
-                    System.out.println("exiting program");
+                    System.out.println("\nExiting program.\n");
                     return;
             }//switch
         }//while
