@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Objects;
 
 public class LedgerManager {
@@ -11,6 +12,15 @@ public class LedgerManager {
 
     public LedgerManager (ArrayList<Transaction> _transactions){
         this.transactions = _transactions;
+        sortTransaction();
+    }
+
+    private void sortTransaction() {
+        this.transactions.sort(
+                Comparator.comparing(Transaction::getLocalDate)
+                        .thenComparing(Transaction::getLocalTime)
+                        .reversed()
+        );
     }
     
     public String[] addTransaction(String description, String vendor, String amount) {
@@ -23,6 +33,7 @@ public class LedgerManager {
 
         Transaction newData = new Transaction(currentDate, LocalTime.parse(formatedCurrentTime), description, vendor, Double.parseDouble(amount));
 
+        this.transactions.add(newData);
         this.transactions.add(newData);
 
         return new String[]{currentDate.toString(), formatedCurrentTime,description, vendor, amount};
