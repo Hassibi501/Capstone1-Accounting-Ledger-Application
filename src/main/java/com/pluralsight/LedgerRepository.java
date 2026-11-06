@@ -67,17 +67,44 @@ public class LedgerRepository {
                 """, fileName, transactions.size(), errorsInFile.size());
         return transactions;
     }
+    private static boolean fileEndsWithNewLine(String fileName) throws IOException {
+        try(RandomAccessFile file = new RandomAccessFile(fileName, "r")) {
+            long fileLength = file.length();
 
-    public static void appendDataToFile(String fileName, String[] dataToAppend)  {
-        try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName, true))) {
+            if (fileLength == 0) return false;
 
-            String input = String.format("%s|%s|%s|%s|%s\n", dataToAppend[0].trim(), dataToAppend[1].trim(), dataToAppend[2].trim(),dataToAppend[3].trim(), dataToAppend[4].trim());
+            file.seek(fileLength - 1);
 
-            bufferedWriter.write(input);
-            System.out.println("Successfully appended new item to transactions.");
+            int lastByte = file.read();
 
+            return lastByte == '\n' || lastByte == '\r';
         }
+    }
+    public static void appendDataToFile(String fileName, String[] dataToAppend)  {
+        try {
+            File file = new File(fileName);
+            boolean fileHasContent = file.length() > 0;
+            boolean endsWithNewLine = false;
+
+            if (fileHasContent) {
+                endsWithNewLine = fileEndsWithNewLine(fileName);
+            }
+
+            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName, true))) {
+                if (fileHasContent && !endsWithNewLine) {
+                    bufferedWriter.newLine();
+                }
+
+                String input = String.format("%s|%s|%s|%s|%s\n", dataToAppend[0].trim(), dataToAppend[1].trim(), dataToAppend[2].trim(),dataToAppend[3].trim(), dataToAppend[4].trim());
+
+                bufferedWriter.write(input);
+                System.out.println("Successfully appended new item to transactions.");
+
+            }
+        }
+
         catch(IOException e) {
+            System.out.println("Unable to append to " + fileName);
             e.printStackTrace();
         }
     }
