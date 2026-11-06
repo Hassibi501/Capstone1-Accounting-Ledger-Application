@@ -1,65 +1,20 @@
 date|time|description|vendor|amount
-2021-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
-2021-04-15|11:15:00|Invoice 1001 paid|Joe|1500.00
-2022-04-16|08:30:10|monthly cloud hosting|DigitalOcean|-20.00
-2022-04-16|12:45:22|lunch meeting|Sweetgreen|-24.50
-2023-04-17|09:00:00|client retainer April|Acme Corp|2500.00
-2023-04-17|14:20:15|wireless mouse|Best Buy|-45.99
-2023-04-18|11:10:33|domain name renewal|Namecheap|-14.99
-2023-04-18|16:05:40|office supplies|Staples|-32.10
-2023-04-19|10:00:12|software subscription|GitHub|-4.00
-2023-04-19|13:30:50|client consultation|Sarah Miller|350.00
-2023-04-20|08:15:00|coffee beans for office|Local Roasters|-18.50
-2023-04-20|15:40:22|external SSD 1TB|Amazon|-109.99
-2024-04-21|09:25:11|printer ink cartridges|HP Store|-54.80
-2024-04-22|12:00:00|freelance design work|Studio Nine|850.00
-2024-04-22|16:15:45|team lunch pizza|Dominos|-42.75
-2024-04-23|10:50:30|SSL certificate renewal|Let's Encrypt|-0.00
-2024-04-24|14:05:19|co-working space day pass|WeWork|-35.00
-2024-04-25|09:12:00|Invoice 1002 paid|TechStart|1200.00
-2024-04-25|11:30:44|high-speed fiber internet|Comcast|-85.00
-2024-04-26|15:20:10|project management tool|Notion|-15.00
-2024-04-27|10:45:00|monitor arm dual mount|Amazon|-65.00
-2024-04-28|13:10:55|client logo design deposit|Nexus Group|500.00
-2025-01-14|09:15:00|annual domain renewal|Cloudflare|-12.00
-2025-02-03|14:22:10|ergonomic chair|Ikea|-229.00
-2025-03-18|11:45:30|Q1 client milestone|Apex Labs|3200.00
-2025-04-05|08:30:00|monthly cloud hosting|DigitalOcean|-48.00
-2025-05-21|16:10:44|business cards & stickers|Moo|-64.50
-2025-06-12|10:00:00|consulting retainer June|Venture Co|1800.00
-2025-07-29|13:15:20|laptop stand & cables|Anker|-55.99
-2025-08-14|12:00:00|Invoice 2045 paid|KiteMedia|1450.00
-2025-09-02|09:40:12|tax prep software|Intuit|-120.00
-2025-10-19|15:05:00|client workshop session|Orbit Digital|900.00
-2025-11-25|17:30:15|Black Friday SaaS deal|1Password|-35.88
-2025-12-30|11:20:00|end of year audit invoice|FinScale|2100.00
-2026-01-15|10:00:00|Q1 retainer deposit|BlueSky Tech|4000.00
-2026-03-22|13:45:10|developer tooling annual|JetBrains|-149.00
-2026-06-10|09:30:00|web app maintenance|Aura Health|1600.00
-2026-08-18|14:15:00|API usage credits|OpenAI|-75.00
-2026-10-01|08:05:00|October cloud hosting|AWS|-62.40
-2026-10-08|12:30:15|client lunch meeting|Panera|-31.25
-2026-10-15|09:00:00|Invoice 3088 paid|Vertex AI|3400.00
-2026-10-22|15:40:20|replacement mechanical keyboard|Keychron|-110.00
-2026-10-31|18:12:00|October internet service|Comcast|-85.00
-2026-11-01|09:00:00|November retainer payment|Nexus Group|2800.00
-2026-11-01|11:15:22|Google Workspace subscription|Google|-18.00
-2026-11-02|14:05:00|standing desk mat|Amazon|-42.50
-2023-11-03|08:45:10|morning team coffee|Starbucks|-14.75
-2026-10-22|08:45:10|morning team coffee|Starbucks|-14.75
-2019-11-03|08:45:10|morning team coffee|Starbucks|-14.75
-2026-12-03|08:45:10|morning team coffee|Starbucks|-14.75
-2026-01-03|08:45:10|morning team coffee|Starbucks|-14.75
-2026-11-03|13:30:00|Invoice 3102 paid|Apex Labs|1750.00
-2026-11-03|09:11:55|test|TEst|67
-2026-11-03|09:12:46|dsaf22|Test2|12332.33
-2026-11-03|09:17:31|testPayment|TestPayment|-67.67
-2026-11-03|09:18:01|test|Test3|-40.30
-2026-11-03|12:33:17|test|Test|67
-2026-11-03|12:33:38|testomg|Test|-67
-2026-11-03|13:23:13|n/a|Home Depot|500
-2026-11-03|13:23:48|ikea|Ikea|40
-2026-11-03|13:24:34|7 eleven|7-eleven|-50
-2026-11-03|13:25:08|food|Mcdonalds|-22.26
-2026-11-05|10:00:00|future scheduled bill|DigitalOcean|-40.00
-2026-11-20|12:00:00|future projected payout|Acme Corp|3000.00
+2021-04-15|10:13:25|Ergonomic Keyboard|Amazon|-89.50
+2022-11-03|08:45:10|Morning Team Coffee|Starbucks|-14.75
+2025-02-03|14:22:10|Ergonomic Chair|Ikea|-229.00
+2025-03-18|11:45:30|Invoice Paid|Apex Labs|3200.00
+2025-08-10|08:45:10|Morning Team Coffee|Starbucks|-14.75
+2025-12-30|11:20:00|End Of Year Audit Invoice|Finscale|2100.00
+2025-01-15|10:00:00|Q1 Retainer Deposit|Bluesky Tech|4000.00
+2025-06-10|09:30:00|Invoice Paid|Apex Labs|1750.00
+2026-10-01|08:05:00|Monthly Cloud Hosting|Digitalocean|-40.00
+2026-10-15|09:00:00|Invoice Paid|Vertex Ai|3400.00
+2026-10-22|08:45:10|Morning Team Coffee|Starbucks|-14.75
+2026-10-28|14:05:00|Standing Desk Mat|Amazon|-42.50
+2026-11-01|09:00:00|Monthly Retainer Payment|Nexus Group|2800.00
+2026-11-02|14:05:00|Standing Desk Mat|Amazon|-42.50
+2026-11-03|08:45:10|Morning Team Coffee|Starbucks|-14.75
+2026-11-04|09:30:00|Office Catering Order|Starbucks|-45.00
+2026-11-05|13:30:00|Invoice Paid|Apex Labs|1750.00
+2026-11-20|10:00:00|Scheduled Cloud Hosting Bill|Digitalocean|-40.00
+2026-11-06|11:53:18|testing - deposit|Testing Vendor Name|45.66

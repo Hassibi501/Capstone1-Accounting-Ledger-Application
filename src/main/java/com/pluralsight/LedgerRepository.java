@@ -115,7 +115,6 @@ public class LedgerRepository {
 
             }
         }
-
         catch(IOException e) {
             System.out.println("\nUnable to append to " + fileName + "\n");
             e.printStackTrace();
