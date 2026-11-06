@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class LedgerManager {
     private final ArrayList<Transaction> transactions;
@@ -28,10 +29,8 @@ public class LedgerManager {
     }
 
     private void printDisplayFormating (ArrayList<Transaction> listToPrint) {
-        if(listToPrint.isEmpty()) return;
-
-        if(this.transactions.isEmpty()) {
-            System.out.println("\nNo Transaction have been made");
+        if(listToPrint.isEmpty()) {
+            System.out.println("\nNo Transaction have been made or incorrect search query.");
             return;
         }
 
@@ -153,32 +152,17 @@ public class LedgerManager {
         ArrayList<Transaction> dateTransactions = new ArrayList<>();
 
         LocalDate startDate = LocalDate.now().minusYears(1).withDayOfYear(1);
-        LocalDate endDate = LocalDate.now().minusYears(1).withMonth(12).withDayOfMonth(31);
+        LocalDate endDate = LocalDate.now().minusYears(1).withMonth(12).withDayOfMonth(startDate.getDayOfMonth());
 
         searchByDate(dateTransactions, startDate, endDate);
     }
 
-
-    private Transaction searchVendor(String vendor) {
-        for(Transaction items: this.transactions) {
-            if(items.getVendor().equalsIgnoreCase(vendor)) {
-                return items;
-            }
-        }
-
-        System.out.println("Vendor does not exist or invalid input. Please try again.");
-        return null;
-
-    }
-
     public void displayByVendor(String vendor) {
         ArrayList<Transaction> vendorTransactions = new ArrayList<>();
-        Transaction transaction = searchVendor(vendor);
 
-
-        for(Transaction ignored : this.transactions) {
-            if(transaction != null) {
-                vendorTransactions.add(transaction);
+        for(Transaction items : this.transactions) {
+            if(Objects.equals(items.getVendor(), vendor)) {
+                vendorTransactions.add(items);
             }
         }
 

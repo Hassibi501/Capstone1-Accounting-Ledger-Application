@@ -46,7 +46,7 @@ public class ConsoleUtils {
         String userInput;
         while(true) {
             displayLedgerMenu();
-            userInput = getValidUserInput(scanner, "Enter menu option(A,D,P,R,H)", "^[ADPRH]$", "Error: Please enter valid menu options(A,D,P,R,H)");
+            userInput = getValidUserInput(scanner, "Enter menu option(A,D,P,R,H)", "^[ADPRHadprh]$", "Error: Please enter valid menu options(A,D,P,R,H)").toUpperCase(Locale.ROOT);
 
             switch (userInput) {
                 case "A":
@@ -77,6 +77,8 @@ public class ConsoleUtils {
 
     private static void runReportsMenu(Scanner scanner, LedgerManager manager) {
         int userInput;
+        String vendorRaw;
+        String vendor;
         while(true) {
             displayReportsMenu();
             userInput = Integer.parseInt(getValidUserInput(scanner, "Enter menu option (1,2,3,4,5,6,0)", "^[1234560]$", "Error: Please enter valid menu options (1,2,3,4,5,6,0)"));
@@ -105,15 +107,15 @@ public class ConsoleUtils {
                     break;
                 case 5:
                     System.out.println("search by vendor");
-                    String vendorRaw = getValidUserInput(scanner, "Enter vendor's name:", "^[a-zA-Z0-9 '&.-]+$$", "Error: Please enter valid input");
-                    String vendor = toTitleCase(vendorRaw);
+                    vendorRaw = getValidUserInput(scanner, "Enter vendor's name:", "^[a-zA-Z0-9 '&.-]+$$", "Error: Please enter valid input");
+                    vendor = toTitleCase(vendorRaw);
                     manager.displayByVendor(vendor);
                     System.out.println();
                     break;
                 case 6:
                     System.out.println("Custom search: Search by any or more fields (Start Date, End Date, Description, Vendor, Amount, or Enter to Skip");
-                    LocalDate startDate = getValidDateInput(scanner, "Enter the Start Date of the transaction your looking for (yyyy-MM-dd): ", "^\\d{4}-\\d{2}-\\d{2}$", "Error: Please enter proper date formate (yyyy-MM-dd):");
-                    LocalDate endDate = getValidDateInput(scanner, "Enter the End Date of the transaction your looking for (yyyy-MM-dd): ", "^\\d{4}-\\d{2}-\\d{2}$", "Error: Please enter proper date formate (yyyy-MM-dd):");
+                    LocalDate startDate = getValidDateInput(scanner, "Enter the Start Date of the transaction you're looking for (yyyy-MM-dd): ", "^\\d{4}-\\d{2}-\\d{2}$", "Error: Please enter proper date format (yyyy-MM-dd):");
+                    LocalDate endDate = getValidDateInput(scanner, "Enter the End Date of the transaction you're looking for (yyyy-MM-dd): ", "^\\d{4}-\\d{2}-\\d{2}$", "Error: Please enter proper date format (yyyy-MM-dd):");
                     String description = ConsoleUtils.getValidUserInput(scanner, "Enter transaction's description:", "^.+$", "Error: Please enter valid input", false);
                     vendorRaw = getValidUserInput(scanner, "Enter vendor's name:", "^[a-zA-Z0-9 '&.-]+$$", "Error: Please enter valid input", false);
                     vendor = toTitleCase(vendorRaw);
@@ -174,9 +176,13 @@ public class ConsoleUtils {
         }
     }
 
-    public static void getUserInputForTransactions (Scanner scanner, String fileName, LedgerManager manager,  boolean isNegative){
-        String description = getValidUserInput(scanner, "Enter deposit description:", "^.+$", "Error: Please enter valid input");
-        String vendorRaw = getValidUserInput(scanner, "Enter deposit vendor:", "^[a-zA-Z0-9 '&.-]+$$", "Error: Please enter valid input");
+    public static void getUserInputForTransactions (Scanner scanner, String fileName, String transactionType, LedgerManager manager,  boolean isNegative){
+
+        String descPromptMsg = "Enter %s description:".formatted(transactionType);
+        String venPromptMsg = "Enter %s vendor:".formatted(transactionType);
+
+        String description = getValidUserInput(scanner, descPromptMsg, "^.+$", "Error: Please enter valid input");
+        String vendorRaw = getValidUserInput(scanner, venPromptMsg, "^[a-zA-Z0-9 '&.-]+$", "Error: Please enter valid input");
         String vendor = toTitleCase(vendorRaw);
         String amount;
 
@@ -202,7 +208,6 @@ public class ConsoleUtils {
             }
             catch (DateTimeParseException e) {
                 System.out.println("Error: That date does not exist on the calendar. Please try again.");
-                continue;
             }
         }
 

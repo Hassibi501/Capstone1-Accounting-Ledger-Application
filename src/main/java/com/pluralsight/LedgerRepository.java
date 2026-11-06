@@ -54,14 +54,14 @@ public class LedgerRepository {
             }//while
         }
         catch (IOException e) {
-            e.getStackTrace();
+            e.printStackTrace();
         }
 
         if(!errorsInFile.isEmpty()) {
-            BatchLogWriter.loggingErrorsToJson(errorsInFile, fileName);
+            BatchLogWriter.loggingErrorsToJson(errorsInFile);
         }
         System.out.printf("""
-                File: \"%s\" loaded.
+                File: "%s" loaded.
                 %d transactions imported successfully.
                 %d records skipped due to data errors (Check logs/ for details).
                 """, fileName, transactions.size(), errorsInFile.size());
@@ -71,14 +71,14 @@ public class LedgerRepository {
     public static void appendDataToFile(String fileName, String[] dataToAppend)  {
         try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(fileName, true))) {
 
-            String input = String.format("%s|%s|%s|%s|%s\n", dataToAppend[0], dataToAppend[1], dataToAppend[2],dataToAppend[3], dataToAppend[4]);
+            String input = String.format("%s|%s|%s|%s|%s\n", dataToAppend[0].trim(), dataToAppend[1].trim(), dataToAppend[2].trim(),dataToAppend[3].trim(), dataToAppend[4].trim());
 
             bufferedWriter.write(input);
             System.out.println("Successfully appended new item to transactions.");
 
         }
         catch(IOException e) {
-            e.getStackTrace();
+            e.printStackTrace();
         }
     }
 }

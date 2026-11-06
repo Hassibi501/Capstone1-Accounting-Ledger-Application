@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class BatchLogWriter {
-    public static void loggingErrorsToJson(ArrayList<ErrorLogEntry> errorList, String fileName) {
+    public static void loggingErrorsToJson(ArrayList<ErrorLogEntry> errorList) {
         LocalDateTime currentDateTimeRaw = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH_mm_ss");
         String currentDateTime = currentDateTimeRaw.format(formatter);
